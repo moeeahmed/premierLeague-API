@@ -1,6 +1,9 @@
 const express = require('express');
 const userController = require('../controller/userController');
 const authController = require('../controller/authController');
+const rateLimit = require('express-rate-limit');
+
+//middleware
 
 const router = express.Router();
 
@@ -8,7 +11,15 @@ const router = express.Router();
 router.post('/signup', authController.signup);
 router.post('/login', authController.login);
 router.post('/logout', authController.logout);
-router.post('/forgotPassword', authController.forgotPassword);
+router.post(
+  '/forgotPassword',
+  rateLimit({
+    windowMs: 24 * 60 * 60 * 1000,
+    max: 5,
+    message: 'Too many password resets requested ',
+  }),
+  authController.forgotPassword
+);
 router.patch('/resetPassword', authController.resetPassword);
 
 //Routes for updating anything to do with settings
