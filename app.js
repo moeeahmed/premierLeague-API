@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const compression = require('compression');
+const cors = require('cors');
 
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -27,6 +28,10 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // LOBAL MIDDLEWARES
+//Implement CORS
+//Access-Control-Allow-Origin *
+app.use(cors());
+
 // Set security HTTP headers
 app.use(
   helmet.contentSecurityPolicy({
