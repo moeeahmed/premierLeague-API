@@ -4,6 +4,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -59,6 +60,8 @@ app.use(hpp());
 //     ],
 //   })
 // );
+
+app.use(compression());
 
 // Limit requests from same API
 const limiter = rateLimit({
