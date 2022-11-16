@@ -11238,10 +11238,6 @@ var reset = /*#__PURE__*/function () {
             res = _context4.sent;
             if (res.data.status === 'success') {
               (0, _alert.showAlert)('success', 'Reset link has been sent to your email');
-              window.setTimeout(function () {
-                location.reload(true);
-                location.assign('/');
-              }, 1500);
             }
             _context4.next = 10;
             break;
@@ -17616,14 +17612,13 @@ resetPassForm === null || resetPassForm === void 0 ? void 0 : resetPassForm.addE
         switch (_context4.prev = _context4.next) {
           case 0:
             e.preventDefault();
-            console.log(e.target);
             email = document.getElementById('emailReset').value;
             updateBtnText(e.target.querySelector('button'), 'sending reset token...');
-            _context4.next = 6;
+            _context4.next = 5;
             return (0, _authentication.reset)(email);
-          case 6:
+          case 5:
             updateBtnText(e.target.querySelector('button'), 'reset');
-          case 7:
+          case 6:
           case "end":
             return _context4.stop();
         }
