@@ -17617,8 +17617,9 @@ resetPassForm === null || resetPassForm === void 0 ? void 0 : resetPassForm.addE
             _context4.next = 5;
             return (0, _authentication.reset)(email);
           case 5:
+            closeModal(passResetModal);
             updateBtnText(e.target.querySelector('button'), 'reset');
-          case 6:
+          case 7:
           case "end":
             return _context4.stop();
         }
@@ -17838,7 +17839,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59808" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63579" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
