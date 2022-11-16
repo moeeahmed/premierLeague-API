@@ -59,37 +59,39 @@ const closeModal = (modal) => (modal.style.display = 'none');
 const updateBtnText = (el, text) => (el.textContent = text);
 
 //EventListeners
-signUpForm?.addEventListener('submit', function (e) {
+signUpForm?.addEventListener('submit', async function (e) {
   e.preventDefault();
-
-  e.target.children.forEach((el) => console.log(el));
 
   const email = document.getElementById('emailSignup').value;
   const name = document.getElementById('name').value;
   const password = document.getElementById('passwordSignup').value;
   const passwordConfirm = document.getElementById('passwordConfirm').value;
 
-  signUp(name, email, password, passwordConfirm);
+  updateBtnText(e.target.querySelector('button'), 'Creating Account...');
+  await signUp(name, email, password, passwordConfirm);
+  updateBtnText(e.target.querySelector('button'), 'Sign up');
 });
 
-loginForm?.addEventListener('submit', function (e) {
+loginForm?.addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
   updateBtnText(e.target.querySelector('button'), 'Logging in...');
-  login(email, password);
+  await login(email, password);
+  updateBtnText(e.target.querySelector('button'), 'Login');
 });
 
-resetPassForm?.addEventListener('submit', function (e) {
+resetPassForm?.addEventListener('submit', async function (e) {
   e.preventDefault();
   console.log(e.target);
 
   const email = document.getElementById('emailReset').value;
 
   updateBtnText(e.target.querySelector('button'), 'sending reset token...');
-  reset(email);
+  await reset(email);
+  updateBtnText(e.target.querySelector('button'), 'reset');
 });
 
 msg?.forEach((el) =>
