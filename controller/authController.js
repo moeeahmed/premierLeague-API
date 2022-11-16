@@ -45,7 +45,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     role: req.body.role,
   });
 
-  createSendToken(newUser, 201,req res);
+  createSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -64,7 +64,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //send jwt to client
-  createSendToken(user, 200,req, res);
+  createSendToken(user, 200, req, res);
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
@@ -90,7 +90,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   await user.save();
 
-  createSendToken(user, 200,req, res);
+  createSendToken(user, 200, req, res);
 });
 
 //forgot password route middleware
