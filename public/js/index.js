@@ -24,10 +24,17 @@ const addListenertoLogo = function () {
   );
 };
 
+const openModal = function (modal) {
+  modal.style.display = 'flex';
+  modal.style.backdropFilter = 'blur(5px)';
+};
+
 const closeModal = function (modal) {
   modal.style.display = 'none';
   modal.style.backdropFilter = 'blur(5px)';
 };
+
+const updateBtnText = (el, text) => (el.textContent = text);
 
 //EventListeners
 if (
@@ -86,7 +93,7 @@ if (document.getElementById('submit__score')) {
     .addEventListener('click', async function (e) {
       e.preventDefault();
 
-      document.getElementById('submit__score').textContent = 'Updating...';
+      updateBtnText(document.getElementById('submit__score'), 'Updating...');
 
       const update = [];
 
@@ -105,7 +112,7 @@ if (document.getElementById('submit__score')) {
 
       await updateScores(update);
 
-      document.getElementById('submit__score').textContent = 'Save Updates';
+      updateBtnText(document.getElementById('submit__score'), 'Save Updates');
     });
 }
 
@@ -120,9 +127,10 @@ if (document.getElementById('btn--save-setting')) {
       form.append('email', document.getElementById('details_email').value);
       form.append('photo', document.getElementById('photo').files[0]);
 
-      document.getElementById('btn--save-setting').textContent = 'Updating...';
+      document.getElementById('btn--save-setting'), 'Updating...';
+
       await updateDetails(form);
-      document.getElementById('btn--save-setting').textContent =
+      updateBtnTextdocument.getElementById('btn--save-setting').textContent =
         'Update Details';
     });
 }
@@ -137,10 +145,12 @@ if (document.getElementById('btn--save-password')) {
       const password = document.getElementById('password').value;
       const passwordConfirm = document.getElementById('password-confirm').value;
 
-      document.getElementById('btn--save-password').textContent = 'Saving...';
+      updateBtnText(document.getElementById('btn--save-password'), 'Saving...');
       await updatePassword({ currentPassword, password, passwordConfirm });
-      document.getElementById('btn--save-password').textContent =
-        'Save Password';
+      updateBtnText(
+        document.getElementById('btn--save-password'),
+        'Save Password'
+      );
     });
 }
 
@@ -156,9 +166,9 @@ if (document.getElementById('update_stats')) {
         .querySelectorAll('article')
         .forEach((el) => fixtureIds.push(JSON.parse(el.dataset.json)));
 
-      document.getElementById('update_stats').textContent = 'Updating...';
+      updateBtnText(document.getElementById('update_stats'), 'Updating...');
       await updateStatistics(fixtureIds);
-      document.getElementById('update_stats').textContent = 'Update Stats';
+      updateBtnText(document.getElementById('update_stats'), 'Update Stats');
     });
 }
 
@@ -168,9 +178,7 @@ if (document.querySelector('.reset-password')) {
     .addEventListener('click', function (e) {
       e.preventDefault();
 
-      document.getElementById('passReset__modal').style.display = 'flex';
-      document.getElementById('passReset__modal').style.backdropFilter =
-        'blur(5px)';
+      openModal(document.getElementById('passReset__modal'));
     });
 }
 
@@ -180,9 +188,7 @@ if (document.querySelector('.nav__el--login ')) {
     .addEventListener('click', function (e) {
       e.preventDefault();
 
-      document.getElementById('login__modal').style.display = 'flex';
-      document.getElementById('login__modal').style.backdropFilter =
-        'blur(5px)';
+      openModal(document.getElementById('login__modal'));
     });
 }
 
@@ -191,8 +197,8 @@ if (document.querySelector('.nav__el--cta ')) {
     .querySelector('.nav__el--cta ')
     .addEventListener('click', function (e) {
       e.preventDefault();
-      document.getElementById('cta__modal').style.display = 'flex';
-      document.getElementById('cta__modal').style.backdropFilter = 'blur(5px)';
+
+      openModal(document.getElementById('cta__modal'));
     });
 }
 
