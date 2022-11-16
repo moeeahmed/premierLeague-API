@@ -574,18 +574,6 @@ progress[value]::-webkit-progress-bar {
 .login-form,
 .signup-form,
 .newPassword-form,
-.resetPassword-form {
-  margin: 0 auto;
-  max-width: 55rem;
-  background-color: #fff;
-  -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
-  box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
-  padding: 5rem 7rem;
-  border-radius: 5px;
-}
-.login-form,
-.signup-form,
-.newPassword-form,
 .resetPassword-form::before {
   margin: 0 auto;
   max-width: 70rem;
@@ -968,7 +956,7 @@ progress[value]::-webkit-progress-bar {
 .modal-content {
   border-radius: 5px;
   padding: 5px;
-  background: linear-gradient(-45deg, #49ba50, #d7e53a, #c12b2b, #1e88e5);
+  background: linear-gradient(-45deg, #444, #fff, #444, #fff);
   background-size: 400% 400%;
   animation: gradient 5s ease infinite;
 }
