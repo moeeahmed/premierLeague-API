@@ -25,7 +25,6 @@ app.set('views', path.join(__dirname, 'views'));
 
 // LOBAL MIDDLEWARES
 // Set security HTTP headers
-
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -42,7 +41,6 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.json({ limit: '50mb' }));
 
 // Data sanitization against NoSQL query injection
