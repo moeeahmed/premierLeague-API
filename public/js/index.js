@@ -21,6 +21,12 @@ const loginModal = document.getElementById('login__modal');
 const signupModal = document.getElementById('cta__modal');
 const passResetModal = document.getElementById('passReset__modal');
 
+//FORMS
+const signUpForm = document.querySelector('.form--signup');
+const loginForm = document.querySelector('.form--login');
+const resetPassForm = document.querySelector('.form--resetPassword');
+const msg = document.querySelectorAll('.login-signup-msg span');
+
 const sumbitScores = document.getElementById('submit__score');
 const saveSettings = document.getElementById('btn--save-setting');
 const savePassword = document.getElementById('btn--save-password');
@@ -55,60 +61,48 @@ const closeModal = (modal) => (modal.style.display = 'none');
 const updateBtnText = (el, text) => (el.textContent = text);
 
 //EventListeners
-if (
-  document.querySelector('.form--login') ||
-  document.querySelector('.form--signup') ||
-  document.querySelector('.form--resetPassword')
-) {
-  document
-    .querySelector('.form--signup')
-    .addEventListener('submit', function (e) {
-      e.preventDefault();
+signUpForm?.addEventListener('submit', function (e) {
+  e.preventDefault();
 
-      e.target.children.forEach((el) => console.log(el));
+  e.target.children.forEach((el) => console.log(el));
 
-      const email = document.getElementById('emailSignup').value;
-      const name = document.getElementById('name').value;
-      const password = document.getElementById('passwordSignup').value;
-      const passwordConfirm = document.getElementById('passwordConfirm').value;
+  const email = document.getElementById('emailSignup').value;
+  const name = document.getElementById('name').value;
+  const password = document.getElementById('passwordSignup').value;
+  const passwordConfirm = document.getElementById('passwordConfirm').value;
 
-      signUp(name, email, password, passwordConfirm);
-    });
+  signUp(name, email, password, passwordConfirm);
+});
 
-  document
-    .querySelector('.form--login')
-    .addEventListener('submit', function (e) {
-      e.preventDefault();
+loginForm?.addEventListener('submit', function (e) {
+  e.preventDefault();
 
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
 
-      updateBtnText(e.target.querySelector('button'), 'Logging in...');
-      login(email, password);
-    });
+  updateBtnText(e.target.querySelector('button'), 'Logging in...');
+  login(email, password);
+});
 
-  document
-    .querySelector('.form--resetPassword')
-    .addEventListener('submit', function (e) {
-      e.preventDefault();
-      console.log(e.target);
+resetPassForm?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  console.log(e.target);
 
-      const email = document.getElementById('emailReset').value;
+  const email = document.getElementById('emailReset').value;
 
-      updateBtnText(e.target.querySelector('button'), 'sending reset token...');
-      reset(email);
-    });
+  updateBtnText(e.target.querySelector('button'), 'sending reset token...');
+  reset(email);
+});
 
-  document.querySelectorAll('.login-signup-msg span').forEach((el) =>
-    el.addEventListener('click', function (e) {
-      closeModal(e.target.closest('.modal'));
+msg?.forEach((el) =>
+  el?.addEventListener('click', function (e) {
+    closeModal(e.target.closest('.modal'));
 
-      e.target.closest('.modal').id === 'login__modal'
-        ? openModal(signupModal)
-        : openModal(loginModal);
-    })
-  );
-}
+    e.target.closest('.modal').id === 'login__modal'
+      ? openModal(signupModal)
+      : openModal(loginModal);
+  })
+);
 
 logoutBtn?.addEventListener('click', logout);
 
