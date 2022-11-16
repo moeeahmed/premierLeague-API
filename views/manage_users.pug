@@ -1,0 +1,33 @@
+extends base
+
+
+block append head
+    title='Football API | Manage Users'
+
+block content
+    main.main
+        .user-view
+            include _account-nav
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Manage Users
+                    p.fixtures--msg.ma-bt-md There #{users.length ==1 ? 'is' : 'are' } 
+                        strong #{users.length} 
+                        | user#{users.length !=1 ? 's' : '' } that have an account with this database. Here you can revoke access, grant admin rights or reset passwords for users.
+
+                    table.table
+                        thead
+                            tr
+                                th: p Name 
+                                th: p email
+                                th: p Role
+                                th: p Active
+                        each user in users
+                             tbody
+                                tr 
+                                    td: p=user.name
+                                    td: p=user.email
+                                    td: p=user.role
+                                    td: p=user.active
+                    

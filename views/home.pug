@@ -1,0 +1,77 @@
+extends base
+
+block append head
+    title='Football API | Home'
+
+mixin tablePosition(team, index)
+    tbody
+        tr 
+            td: p=index+1
+            td: img.badge(src='/img/' +team.team.name.replace(/\s/g, '') +'.png' alt=`${team.team.name} Team badge`)
+            td: p=team.all.played
+            td: p=team.all.win
+            td: p=team.all.draw
+            td: p=team.all.lose
+            td: p=team.all.goals.for
+            td: p=team.all.goals.against
+            td: p=team.goalsDiff
+            td: p=team.points
+            td: div.team-form
+                - var color = {L: 'red', D: 'grey',W:'green'}
+                each result in team.form
+                    div.form-indicator(style={'background-color': color[result]}) 
+
+mixin fixtures(fixture)
+    -var duration = moment.duration(moment(new Date()).diff(fixture.Date, 'minutes'));
+    a.game(href='/fixtures' data-fixture=`${fixture.HomeTeam}vs${fixture.AwayTeam}`).flex-bar
+        p.home__team(style={'text-align': 'right', 'width':'40%'}) #{fixture.HomeTeam}  
+        if fixture.Status == 'Not Started'
+            p.score  #{moment(fixture.Date).format('HH:mm')}
+        else 
+            p.score  #{fixture.HomeTeamScore} : #{fixture.AwayTeamScore}
+        p.away__team(style={'text-align': 'left', 'width':'40%'}) #{fixture.AwayTeam}
+        if fixture.Status == 'Live'
+            p.elapsedGameTime #{duration}'
+
+block content
+    main.main.container__home
+        .table 
+            .header.header__home
+                h1 Premier League Standings
+                //Dynamic table from DB will be populated here
+            table.table.fixture__table
+                thead
+                    tr
+                        th: p Rank 
+                        th: p Team
+                        th: p Played
+                        th: p Wins
+                        th: p Draws
+                        th: p Losses
+                        th: p Goals F
+                        th: p Goals A
+                        th: p Goal D
+                        th: p Points
+                        th: p Form
+                    //api/v1/fixture/updateTable API to update the table only do-able by the admin
+                each team,index in standings
+                    +tablePosition(team,index)
+        .leftSide
+            .fixtures  
+                .header.header__home
+                    h1 Today's Fixtures
+                if fixtures.length
+                    each fixture in fixtures
+                        +fixtures(fixture)
+                else
+                    .fixtures--msg.vert-c
+                        p There are no live premier league fixtures today
+
+            .results
+                .header.header__home
+                    h1 Results
+                .container__fixtures
+                    each result in results
+                        span.time #{moment(result._id).format('dddd Do MMMM YYYY')}
+                        each game in result.results
+                            +fixtures(game)

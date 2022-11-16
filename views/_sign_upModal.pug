@@ -1,0 +1,25 @@
+div.modal#cta__modal
+  div.modal-content
+    .signup-form
+        span.close 
+            | &times
+        h2.heading-secondary.ma-bt-lg Sign up for an account
+        form.form.form--signup
+            .form__group
+                label.form__label(for='name') Your name
+                input#name.form__input(type='text', placeholder='Please enter your name', reqired)
+            .form__group
+                label.form__label(for='email') Email address
+                input#emailSignup.form__input(type='email', placeholder='you@example.com', required)
+            .form__group.ma-bt-md
+                label.form__label(for='password') Password
+                input#passwordSignup.form__input(type='password', placeholder='••••••••', required, minlength='8' autocomplete="new-password")
+            .form__group.ma-bt-md
+                label.form__label(for='passwordConfirm' autocomplete="new-password") Confirm Password
+                input#passwordConfirm.form__input(type='password', placeholder='••••••••', required, minlength='8')
+            .form__group
+                button.btn.btn-grey Sign up
+            .form__group.login-signup-msg
+                p 
+                    | Already have an account? 
+                    span: strong Log in here

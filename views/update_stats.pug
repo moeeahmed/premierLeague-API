@@ -1,0 +1,38 @@
+extends base
+
+
+block append head
+    title='Football API | Update Stats'
+
+block content
+    main.main
+        .user-view
+            include _account-nav
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Update Statistics
+                    p.fixtures--msg.ma-bt-md There #{fixtures.length ==1 ? 'is' : 'are' } 
+                        strong #{fixtures.length} 
+                        | fixture#{fixtures.length !=1 ? 's' : '' } statistics that needs updating
+
+                    if fixtures.length
+                        each fixture in fixtures 
+                            article(data-json=`${JSON.stringify(fixture.FixtureId)}`)
+                            p.fixture__heading
+                                strong #{fixture.HomeTeam} 
+                                | vs 
+                                strong #{fixture.AwayTeam} 
+                                | at the 
+                                strong #{fixture.Location}
+                            .fixture--update.ma-bt-md
+                                img.team__badge(src='/img/' +fixture.HomeTeam.replace(/\s/g, '') +'.png' data-team=`${fixture.HomeTeam}` alt=`${fixture.HomeTeam} Team badge`)
+                                input#score.form__input(type='number', value=`${fixture.HomeTeamScore}`, required, name='score')
+                                div: h1 vs
+                                input#score.form__input(type='number', value=`${fixture.AwayTeamScore}`, required, name='score')
+                                img.team__badge(src='/img/' +fixture.AwayTeam.replace(/\s/g, '') +'.png' data-team=`${fixture.AwayTeam}` alt=`${fixture.AwayTeam} Team badge`)
+                                p(style="font-size: 13px")
+                                    strong Status: 
+                                    | FT
+                        .form__group.right
+                             button#update_stats.btn.btn--grey Update Stats

@@ -1,0 +1,40 @@
+extends base
+
+
+block append head
+    title='Football API | Update Scores'
+
+block content
+    main.main
+        .user-view
+            include _account-nav
+
+            .user-view__content
+                .user-view__form-container
+                    h2.heading-secondary.ma-bt-md Update Score
+                    p.fixtures--msg.ma-bt-md There #{fixtures.length ==1 ? 'is' : 'are' } 
+                        strong #{fixtures.length} 
+                        | fixture#{fixtures.length !=1 ? 's' : '' } scores that needs updating
+                
+                    if fixtures.length
+                        each fixture in fixtures
+                            p.fixture__heading 
+                                strong #{fixture.HomeTeam} 
+                                | vs 
+                                strong #{fixture.AwayTeam} 
+                                | at the 
+                                strong #{fixture.Location}
+                            form.fixture--update.ma-bt-md
+                                img.team__badge(src='/img/' +fixture.HomeTeam.replace(/\s/g, '') +'.png' data-team=`${fixture.HomeTeam}` alt=`${fixture.HomeTeam} Team badge`)
+                                input#score.form__input(type='number', value=`${fixture.HomeTeamScore || 0 }`, required, name='score')
+                                div: h1 vs
+                                input#score.form__input(type='number', value=`${fixture.AwayTeamScore || 0}`, required, name='score')
+                                img.team__badge(src='/img/' +fixture.AwayTeam.replace(/\s/g, '') +'.png' data-team=`${fixture.AwayTeam}` alt=`${fixture.AwayTeam} Team badge`)
+                                select.select__style
+                                    option(value='' selected disabled hidden) #{fixture.Status}
+                                    option(value='Not Started') Not Started 
+                                    option(value='Live') Live 
+                                    option(value='Finished') Finished 
+                                    option(value='Postponed') Postponed
+                        .form__group.right
+                            button#submit__score.btn.btn--grey Save updates
