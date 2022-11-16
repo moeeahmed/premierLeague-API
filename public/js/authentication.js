@@ -77,10 +77,6 @@ export const reset = async (email) => {
 
     if (res.data.status === 'success') {
       showAlert('success', 'Reset link has been sent to your email');
-      window.setTimeout(() => {
-        location.reload(true);
-        location.assign('/');
-      }, 1500);
     }
   } catch (err) {
     showAlert('error', err.response.data.message);

@@ -85,12 +85,12 @@ loginForm?.addEventListener('submit', async function (e) {
 
 resetPassForm?.addEventListener('submit', async function (e) {
   e.preventDefault();
-  console.log(e.target);
 
   const email = document.getElementById('emailReset').value;
 
   updateBtnText(e.target.querySelector('button'), 'sending reset token...');
   await reset(email);
+  closeModal(passResetModal);
   updateBtnText(e.target.querySelector('button'), 'reset');
 });
 
