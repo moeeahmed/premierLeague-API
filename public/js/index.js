@@ -55,8 +55,6 @@ const openModal = function (modal) {
   modal.style.backdropFilter = 'blur(5px)';
 };
 
-const modalForms = function (html) {};
-
 const closeModal = (modal) => (modal.style.display = 'none');
 const updateBtnText = (el, text) => (el.textContent = text);
 
