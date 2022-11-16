@@ -9,6 +9,26 @@ import {
 } from './update';
 import { getFixture, getAvgStats } from './getFixture';
 
+//BUTTONS
+const loginBtn = document.querySelector('.nav__el--login');
+const signUpBtn = document.querySelector('.nav__el--cta ');
+const logoutBtn = document.querySelector('.nav__el--logout');
+const modalCloseBtns = document.querySelectorAll('.close');
+const resetPassBtn = document.querySelector('.reset-password');
+
+//MODALS
+const loginModal = document.getElementById('login__modal');
+const signupModal = document.getElementById('cta__modal');
+const passResetModal = document.getElementById('passReset__modal');
+
+const sumbitScores = document.getElementById('submit__score');
+const saveSettings = document.getElementById('btn--save-setting');
+const savePassword = document.getElementById('btn--save-password');
+const updateStats = document.getElementById('update_stats');
+const individualGames = document.querySelectorAll('.game');
+const newPasswordSet = document.querySelector('.form--newPassword');
+const teamLogo = document.querySelector('.team-logo');
+
 //Functions
 const addListenertoLogo = function () {
   document.querySelectorAll('.team-logo').forEach((el) =>
@@ -29,11 +49,9 @@ const openModal = function (modal) {
   modal.style.backdropFilter = 'blur(5px)';
 };
 
-const closeModal = function (modal) {
-  modal.style.display = 'none';
-  modal.style.backdropFilter = 'blur(5px)';
-};
+const modalForms = function (html) {};
 
+const closeModal = (modal) => (modal.style.display = 'none');
 const updateBtnText = (el, text) => (el.textContent = text);
 
 //EventListeners
@@ -46,6 +64,9 @@ if (
     .querySelector('.form--signup')
     .addEventListener('submit', function (e) {
       e.preventDefault();
+
+      e.target.children.forEach((el) => console.log(el));
+
       const email = document.getElementById('emailSignup').value;
       const name = document.getElementById('name').value;
       const password = document.getElementById('passwordSignup').value;
@@ -58,9 +79,11 @@ if (
     .querySelector('.form--login')
     .addEventListener('submit', function (e) {
       e.preventDefault();
+
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
+      updateBtnText(e.target.querySelector('button'), 'Logging in...');
       login(email, password);
     });
 
@@ -68,176 +91,135 @@ if (
     .querySelector('.form--resetPassword')
     .addEventListener('submit', function (e) {
       e.preventDefault();
+      console.log(e.target);
+
       const email = document.getElementById('emailReset').value;
 
+      updateBtnText(e.target.querySelector('button'), 'sending reset token...');
       reset(email);
     });
 
   document.querySelectorAll('.login-signup-msg span').forEach((el) =>
     el.addEventListener('click', function (e) {
       closeModal(e.target.closest('.modal'));
+
       e.target.closest('.modal').id === 'login__modal'
-        ? (document.getElementById('cta__modal').style.display = 'flex')
-        : (document.getElementById('login__modal').style.display = 'flex');
+        ? openModal(signupModal)
+        : openModal(loginModal);
     })
   );
 }
 
-if (document.querySelector('.nav__el--logout')) {
-  document.querySelector('.nav__el--logout').addEventListener('click', logout);
-}
+logoutBtn?.addEventListener('click', logout);
 
-if (document.getElementById('submit__score')) {
-  document
-    .getElementById('submit__score')
-    .addEventListener('click', async function (e) {
-      e.preventDefault();
+resetPassBtn?.addEventListener('click', function (e) {
+  e.preventDefault();
+  closeModal(loginModal);
+  openModal(passResetModal);
+});
 
-      updateBtnText(document.getElementById('submit__score'), 'Updating...');
+[loginBtn, signUpBtn].forEach((el) =>
+  el?.addEventListener('click', function (e) {
+    e.preventDefault();
 
-      const update = [];
+    const type = e.target.classList.value.split('--')[1];
 
-      document.querySelectorAll('.fixture--update').forEach((el) => {
-        const tempObj = {};
+    openModal(document.getElementById(`${type}__modal`));
+  })
+);
 
-        tempObj.HomeTeam = el.children[0].dataset.team;
-        tempObj.AwayTeam = el.children[4].dataset.team;
-        tempObj.HomeTeamScore = el.children[1].value;
-        tempObj.AwayTeamScore = el.children[3].value;
-        tempObj.Status =
-          el.children[5].value || el.children[5].children[0].textContent;
+modalCloseBtns.forEach((closeBtn) => {
+  closeBtn?.addEventListener('click', function (e) {
+    e.preventDefault();
 
-        update.push(tempObj);
-      });
-
-      await updateScores(update);
-
-      updateBtnText(document.getElementById('submit__score'), 'Save Updates');
-    });
-}
-
-if (document.getElementById('btn--save-setting')) {
-  document
-    .getElementById('btn--save-setting')
-    .addEventListener('click', async function (e) {
-      e.preventDefault();
-
-      const form = new FormData();
-      form.append('name', document.getElementById('details_name').value);
-      form.append('email', document.getElementById('details_email').value);
-      form.append('photo', document.getElementById('photo').files[0]);
-
-      document.getElementById('btn--save-setting'), 'Updating...';
-
-      await updateDetails(form);
-      updateBtnTextdocument.getElementById('btn--save-setting').textContent =
-        'Update Details';
-    });
-}
-
-if (document.getElementById('btn--save-password')) {
-  document
-    .getElementById('btn--save-password')
-    .addEventListener('click', async function (e) {
-      e.preventDefault();
-
-      const currentPassword = document.getElementById('password-current').value;
-      const password = document.getElementById('password').value;
-      const passwordConfirm = document.getElementById('password-confirm').value;
-
-      updateBtnText(document.getElementById('btn--save-password'), 'Saving...');
-      await updatePassword({ currentPassword, password, passwordConfirm });
-      updateBtnText(
-        document.getElementById('btn--save-password'),
-        'Save Password'
-      );
-    });
-}
-
-if (document.getElementById('update_stats')) {
-  document
-    .getElementById('update_stats')
-    .addEventListener('click', async function (e) {
-      e.preventDefault();
-
-      const fixtureIds = [];
-
-      document
-        .querySelectorAll('article')
-        .forEach((el) => fixtureIds.push(JSON.parse(el.dataset.json)));
-
-      updateBtnText(document.getElementById('update_stats'), 'Updating...');
-      await updateStatistics(fixtureIds);
-      updateBtnText(document.getElementById('update_stats'), 'Update Stats');
-    });
-}
-
-if (document.querySelector('.reset-password')) {
-  document
-    .querySelector('.reset-password')
-    .addEventListener('click', function (e) {
-      e.preventDefault();
-
-      openModal(document.getElementById('passReset__modal'));
-    });
-}
-
-if (document.querySelector('.nav__el--login ')) {
-  document
-    .querySelector('.nav__el--login ')
-    .addEventListener('click', function (e) {
-      e.preventDefault();
-
-      openModal(document.getElementById('login__modal'));
-    });
-}
-
-if (document.querySelector('.nav__el--cta ')) {
-  document
-    .querySelector('.nav__el--cta ')
-    .addEventListener('click', function (e) {
-      e.preventDefault();
-
-      openModal(document.getElementById('cta__modal'));
-    });
-}
-
-if (document.querySelectorAll('.close ')) {
-  document.querySelectorAll('.close ').forEach((closeBtn) => {
-    closeBtn.addEventListener('click', function (e) {
-      e.preventDefault();
-      closeModal(e.target.closest('.modal'));
-    });
+    closeModal(e.target.closest('.modal'));
   });
-}
+});
 
-if (document.querySelector('.game')) {
-  document.querySelectorAll('.game').forEach((btn) =>
-    btn.addEventListener('click', async function (e) {
-      e.preventDefault();
-      const [HomeTeam, AwayTeam] = e.target
-        .closest('div')
-        .dataset.fixture.split('vs');
+sumbitScores?.addEventListener('click', async function (e) {
+  e.preventDefault();
 
-      await getFixture(HomeTeam, AwayTeam);
-      addListenertoLogo();
-    })
-  );
-}
+  updateBtnText(document.getElementById('submit__score'), 'Updating...');
 
-if (document.querySelector('.form--newPassword')) {
+  const update = [];
+
+  document.querySelectorAll('.fixture--update').forEach((el) => {
+    const tempObj = {};
+
+    tempObj.HomeTeam = el.children[0].dataset.team;
+    tempObj.AwayTeam = el.children[4].dataset.team;
+    tempObj.HomeTeamScore = el.children[1].value;
+    tempObj.AwayTeamScore = el.children[3].value;
+    tempObj.Status =
+      el.children[5].value || el.children[5].children[0].textContent;
+
+    update.push(tempObj);
+  });
+
+  await updateScores(update);
+
+  updateBtnText(document.getElementById('submit__score'), 'Save Updates');
+});
+
+saveSettings?.addEventListener('click', async function (e) {
+  e.preventDefault();
+
+  const form = new FormData();
+  form.append('name', document.getElementById('details_name').value);
+  form.append('email', document.getElementById('details_email').value);
+  form.append('photo', document.getElementById('photo').files[0]);
+
+  updateBtnText(document.getElementById('btn--save-setting'), 'Updating...');
+
+  await updateDetails(form);
+  updateBtnText(document.getElementById('btn--save-setting'), 'Update Details');
+});
+
+savePassword?.addEventListener('click', async function (e) {
+  e.preventDefault();
+
+  const currentPassword = document.getElementById('password-current').value;
+  const password = document.getElementById('password').value;
+  const passwordConfirm = document.getElementById('password-confirm').value;
+
+  updateBtnText(document.getElementById('btn--save-password'), 'Saving...');
+  await updatePassword({ currentPassword, password, passwordConfirm });
+  updateBtnText(document.getElementById('btn--save-password'), 'Save Password');
+});
+
+updateStats?.addEventListener('click', async function (e) {
+  e.preventDefault();
+
+  const fixtureIds = [];
+
   document
-    .querySelector('.form--newPassword')
-    .addEventListener('submit', function (e) {
-      e.preventDefault();
-      const token = document.getElementById('token').value;
-      const password = document.getElementById('passwordReset').value;
-      const passwordConfirm = document.getElementById(
-        'passwordConfirmReset'
-      ).value;
+    .querySelectorAll('article')
+    .forEach((el) => fixtureIds.push(JSON.parse(el.dataset.json)));
 
-      setNewPassword({ token, password, passwordConfirm });
-    });
-}
+  updateBtnText(document.getElementById('update_stats'), 'Updating...');
+  await updateStatistics(fixtureIds);
+  updateBtnText(document.getElementById('update_stats'), 'Update Stats');
+});
 
-if (document.querySelector('.team-logo')) addListenertoLogo();
+individualGames?.forEach((btn) =>
+  btn.addEventListener('click', async function (e) {
+    e.preventDefault();
+    const [HomeTeam, AwayTeam] = e.target
+      .closest('div')
+      .dataset.fixture.split('vs');
+
+    await getFixture(HomeTeam, AwayTeam);
+    addListenertoLogo();
+  })
+);
+
+newPasswordSet?.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const token = document.getElementById('token').value;
+  const password = document.getElementById('passwordReset').value;
+  const passwordConfirm = document.getElementById('passwordConfirmReset').value;
+
+  setNewPassword({ token, password, passwordConfirm });
+});
+
+if (teamLogo) addListenertoLogo();
