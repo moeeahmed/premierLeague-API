@@ -2,6 +2,7 @@ const express = require('express');
 const userController = require('../controller/userController');
 const authController = require('../controller/authController');
 const rateLimit = require('express-rate-limit');
+const AppError = require('../utils/appError');
 
 //middleware
 
@@ -16,7 +17,7 @@ router.post(
   rateLimit({
     windowMs: 24 * 60 * 60 * 1000,
     max: 5,
-    message: 'Too many password resets requested ',
+    message: new AppError('No more resets can be requesed until tomorrow', 429),
   }),
   authController.forgotPassword
 );
