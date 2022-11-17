@@ -104,19 +104,50 @@ exports.getAverageStats = catchAsync(async (req, res) => {
       $project: {
         _id: 0,
         Team: team,
+        form: {
+          $cond: [
+            { $eq: ['$HomeTeam', team] },
+            {
+              $cond: [
+                { $gt: ['$HomeTeamScore', '$AwayTeamScore'] },
+                'W',
+                {
+                  $cond: [
+                    { $eq: ['$HomeTeamScore', '$AwayTeamScore'] },
+                    'D',
+                    'L',
+                  ],
+                },
+              ],
+            },
+            {
+              $cond: [
+                { $gt: ['$AwayTeamScore', '$HomeTeamScore'] },
+                'W',
+                {
+                  $cond: [
+                    { $eq: ['$HomeTeamScore', '$AwayTeamScore'] },
+                    'D',
+                    'L',
+                  ],
+                },
+              ],
+            },
+          ],
+        },
         goalsFor: {
-          $cond: {
-            if: { $eq: ['$HomeTeam', team] },
-            then: { $sum: '$HomeTeamScore' },
-            else: { $sum: '$AwayTeamScore' },
-          },
+          $cond: [
+            { $eq: ['$HomeTeam', team] },
+            { $sum: '$HomeTeamScore' },
+            { $sum: '$AwayTeamScore' },
+          ],
         },
         goalsAgainst: {
-          $cond: {
-            if: { $eq: ['$HomeTeam', team] },
-            then: { $sum: '$AwayTeamScore' },
-            else: { $sum: '$HomeTeamScore' },
-          },
+          $cond: [
+            { $eq: ['$HomeTeam', team] },
+            { $sum: '$AwayTeamScore' },
+            { $sum: '$HomeTeamScore' },
+          ],
         },
         wins: {
           $cond: [
@@ -140,6 +171,7 @@ exports.getAverageStats = catchAsync(async (req, res) => {
     {
       $group: {
         _id: '$Team',
+        form: { $push: '$form' },
         numOfGames: { $sum: 1 },
         GF: { $sum: '$goalsFor' },
         GA: { $sum: '$goalsAgainst' },
@@ -181,6 +213,7 @@ exports.getAverageStats = catchAsync(async (req, res) => {
     {
       $project: {
         _id: '$Team',
+        Form: '$form',
         Played: '$numOfGames',
         GF: '$GF',
         GA: '$GA',
