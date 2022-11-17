@@ -2,6 +2,7 @@ const getData = require('./dataController');
 const Fixture = require('../models/fixtureModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const capitalize = require('./../utils/capitalize');
 
 //Gets the current fixtures list for the database
 exports.getFixtures = catchAsync(async (req, res) => {
@@ -93,7 +94,8 @@ exports.updateFixtureStats = catchAsync(async (req, res) => {
 exports.getAverageStats = catchAsync(async (req, res) => {
   //lets get all fixture related to the requested team that are finished
 
-  const team = req.params.team;
+  const team = capitalize(req.params.team);
+
   const result = await Fixture.aggregate([
     { $match: { $or: [{ HomeTeam: team }, { AwayTeam: team }] } },
     { $match: { Status: 'Finished' } },
