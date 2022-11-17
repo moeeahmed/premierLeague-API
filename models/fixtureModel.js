@@ -62,10 +62,5 @@ const fixtureSchema = new mongoose.Schema({
   LastUpdated: { type: Date, default: Date.now },
 });
 
-fixtureSchema.pre('save', async function (next) {
-  this.totalShots = this.shotsOnT + this.shotsOffT;
-  next();
-});
-
 //EXPORT MODEL
 module.exports = mongoose.model('Fixture', fixtureSchema);
