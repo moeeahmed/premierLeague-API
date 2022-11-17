@@ -7,6 +7,9 @@ export const getAvgStats = async (id) => {
   const teamImg = document.querySelector('.avgTeam-image img');
   const statsList = document.querySelector('.stats--list');
   const team = document.querySelector('.avgTeam-info h2');
+  const teamForm = document.querySelector('.avgTeam-info .team-form');
+
+  const color = { L: 'red', D: 'grey', W: 'green' };
 
   try {
     const res = await axios({
@@ -18,6 +21,15 @@ export const getAvgStats = async (id) => {
 
     const data = res.data.result[0];
 
+    teamForm.textContent = '';
+
+    for (const [index, el] of Object.entries(data.Form)) {
+      if (index > 9) break;
+      const html = `<div class="form-indicator" style="background-color:${color[el]};"> </div>`;
+
+      teamForm.insertAdjacentHTML('beforeend', html);
+    }
+
     overallStats[0].textContent = data.Played;
     overallStats[1].textContent = data.Wins;
     overallStats[2].textContent = data.Losses;
@@ -26,7 +38,6 @@ export const getAvgStats = async (id) => {
     teamImg.src = `/img/${res.data.team.replace(/\s/g, '')}.png`;
 
     let html = '';
-
     statsList.textContent = '';
     for (const [key, value] of Object.entries(data.avgStats)) {
       html += `<p><strong>${key}:  </strong>${value.toFixed(2)}</p>`;

@@ -118,6 +118,7 @@ td {
   height: 10px;
   border-radius: 50%;
   width: 10px;
+  margin-inline: 2px;
 }
 .flex-bar {
   display: flex;
@@ -858,8 +859,9 @@ progress[value]::-webkit-progress-bar {
   margin-bottom: -80px;
 }
 .avgTeam-info {
-  padding: 3rem 0 0 2.75rem;
+  padding: 2rem 0 0 2rem;
   display: flex;
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
   position: relative;
@@ -867,7 +869,7 @@ progress[value]::-webkit-progress-bar {
   width: 100%;
 }
 .avgTeam-deets {
-  font-size: 3.5rem;
+  font-size: 2.3rem;
   font-weight: 700;
   color: #444;
 }
@@ -881,11 +883,10 @@ progress[value]::-webkit-progress-bar {
 .avgTeam-stats {
   border-radius: 20px;
   background-color: #444;
-  box-shadow: 15px 15px 30px rgba(#3a141f, 0.1);
   width: 350px;
   position: absolute;
   left: -40px;
-  bottom: -30px;
+  bottom: -40px;
   display: flex;
   justify-content: space-between;
   padding: 1.25rem 2.5rem;
@@ -927,7 +928,7 @@ progress[value]::-webkit-progress-bar {
   font-size: 1.7em;
   text-transform: capitalize;
   overflow-y: scroll;
-  max-height: 75%;
+  max-height: 60%;
 }
 /**----- Fixtures -----**/
 .match--overview {

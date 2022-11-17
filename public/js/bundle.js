@@ -17181,7 +17181,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var getAvgStats = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
-    var overallStats, teamImg, statsList, team, res, data, html, _i, _Object$entries, _Object$entries$_i, key, value;
+    var overallStats, teamImg, statsList, team, teamForm, color, res, data, _i, _Object$entries, _Object$entries$_i, index, el, _html, html, _i2, _Object$entries2, _Object$entries2$_i, key, value;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -17190,16 +17190,43 @@ var getAvgStats = /*#__PURE__*/function () {
             teamImg = document.querySelector('.avgTeam-image img');
             statsList = document.querySelector('.stats--list');
             team = document.querySelector('.avgTeam-info h2');
-            _context.prev = 4;
-            _context.next = 7;
+            teamForm = document.querySelector('.avgTeam-info .team-form');
+            color = {
+              L: 'red',
+              D: 'grey',
+              W: 'green'
+            };
+            _context.prev = 6;
+            _context.next = 9;
             return (0, _axios.default)({
               method: 'GET',
               url: "/api/v1/fixture/getAverageStats/".concat(id)
             });
-          case 7:
+          case 9:
             res = _context.sent;
             team.lastChild.textContent = res.data.team;
             data = res.data.result[0];
+            teamForm.textContent = '';
+            _i = 0, _Object$entries = Object.entries(data.Form);
+          case 14:
+            if (!(_i < _Object$entries.length)) {
+              _context.next = 23;
+              break;
+            }
+            _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2), index = _Object$entries$_i[0], el = _Object$entries$_i[1];
+            if (!(index > 9)) {
+              _context.next = 18;
+              break;
+            }
+            return _context.abrupt("break", 23);
+          case 18:
+            _html = "<div class=\"form-indicator\" style=\"background-color:".concat(color[el], ";\"> </div>");
+            teamForm.insertAdjacentHTML('beforeend', _html);
+          case 20:
+            _i++;
+            _context.next = 14;
+            break;
+          case 23:
             overallStats[0].textContent = data.Played;
             overallStats[1].textContent = data.Wins;
             overallStats[2].textContent = data.Losses;
@@ -17207,23 +17234,23 @@ var getAvgStats = /*#__PURE__*/function () {
             teamImg.src = "/img/".concat(res.data.team.replace(/\s/g, ''), ".png");
             html = '';
             statsList.textContent = '';
-            for (_i = 0, _Object$entries = Object.entries(data.avgStats); _i < _Object$entries.length; _i++) {
-              _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2), key = _Object$entries$_i[0], value = _Object$entries$_i[1];
+            for (_i2 = 0, _Object$entries2 = Object.entries(data.avgStats); _i2 < _Object$entries2.length; _i2++) {
+              _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2), key = _Object$entries2$_i[0], value = _Object$entries2$_i[1];
               html += "<p><strong>".concat(key, ":  </strong>").concat(value.toFixed(2), "</p>");
             }
             statsList.insertAdjacentHTML('afterbegin', html);
-            _context.next = 24;
+            _context.next = 37;
             break;
-          case 21:
-            _context.prev = 21;
-            _context.t0 = _context["catch"](4);
+          case 34:
+            _context.prev = 34;
+            _context.t0 = _context["catch"](6);
             (0, _alert.showAlert)('error', 'error getting details');
-          case 24:
+          case 37:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[4, 21]]);
+    }, _callee, null, [[6, 34]]);
   }));
   return function getAvgStats(_x) {
     return _ref.apply(this, arguments);
@@ -17232,7 +17259,7 @@ var getAvgStats = /*#__PURE__*/function () {
 exports.getAvgStats = getAvgStats;
 var getFixture = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(HomeTeam, AwayTeam) {
-    var awayTeamLogo, container, headerH1, homeTeamLogo, matchOverview, matchReferee, matchScore, matchStatus, matchTime, roundNumber, statistics, teamName, teamLogo, tempHTML, res, data, _data$Statistics, _data$Statistics2, homeStats, awayStats, stats, _i2, _Object$keys, key, percentage;
+    var awayTeamLogo, container, headerH1, homeTeamLogo, matchOverview, matchReferee, matchScore, matchStatus, matchTime, roundNumber, statistics, teamName, teamLogo, tempHTML, res, data, _data$Statistics, _data$Statistics2, homeStats, awayStats, stats, _i3, _Object$keys, key, percentage;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -17263,8 +17290,8 @@ var getFixture = /*#__PURE__*/function () {
             _data$Statistics = data === null || data === void 0 ? void 0 : data.Statistics, _data$Statistics2 = _slicedToArray(_data$Statistics, 2), homeStats = _data$Statistics2[0], awayStats = _data$Statistics2[1];
             stats = '';
             if (homeStats && awayStats) {
-              for (_i2 = 0, _Object$keys = Object.keys(homeStats); _i2 < _Object$keys.length; _i2++) {
-                key = _Object$keys[_i2];
+              for (_i3 = 0, _Object$keys = Object.keys(homeStats); _i3 < _Object$keys.length; _i3++) {
+                key = _Object$keys[_i3];
                 percentage = homeStats[key] === awayStats[key] ? 0.5 : parseInt(homeStats[key] || 0) / (parseInt(homeStats[key] || 0) + parseInt(awayStats[key] || 0));
                 stats += "\n        <p style=\"font-size:16px;text-align:center\"><strong>".concat(key, "</strong></p>\n        <div class=\"stat__progress\">\n          <p>").concat(homeStats[key] || 0, "</p>\n          <progress class=\"stats\" max=\"100\" value=").concat(Math.floor(percentage * 100), "></progress>\n          <p>").concat(awayStats[key] || 0, "</p>\n        </div>");
               }
@@ -17839,7 +17866,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63579" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59710" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
