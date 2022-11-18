@@ -7,19 +7,22 @@ mixin tablePosition(team, index)
     tbody
         tr 
             td: p=index+1
-            td: img.badge(src='/img/' +team.team.name.replace(/\s/g, '') +'.png' alt=`${team.team.name} Team badge`)
-            td: p=team.all.played
-            td: p=team.all.win
-            td: p=team.all.draw
-            td: p=team.all.lose
-            td: p=team.all.goals.for
-            td: p=team.all.goals.against
-            td: p=team.goalsDiff
-            td: p=team.points
+            td: img.badge(src='/img/' +team.Team.replace(/\s/g, '') +'.png' alt=`${team.Team} Team badge`)
+            td: p=team.Played
+            td: p=team.Wins
+            td: p=team.Draws
+            td: p=team.Losses
+            td: p=team.GF
+            td: p=team.GA
+            td: p=team.GD
+            td: p=team.Points
             td: div.team-form
                 - var color = {L: 'red', D: 'grey',W:'green'}
-                each result in team.form
-                    div.form-indicator(style={'background-color': color[result]}) 
+                //- each result in team.Form
+                -var n = 0
+                while n < 5
+                    div.form-indicator(style={'background-color': color[team.Form[n]]})
+                    - n++
 
 mixin fixtures(fixture)
     -var duration = moment.duration(moment(new Date()).diff(fixture.Date, 'minutes'));
@@ -53,7 +56,6 @@ block content
                         th: p Goal D
                         th: p Points
                         th: p Form
-                    //api/v1/fixture/updateTable API to update the table only do-able by the admin
                 each team,index in standings
                     +tablePosition(team,index)
         .leftSide
