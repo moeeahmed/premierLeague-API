@@ -77,25 +77,6 @@ exports.resetPassword = catchAsync(async (_, res) => {
 
 //Account page render
 exports.accountSettings = catchAsync(async (_, res) => {
-  const startToday = new Date(new Date().setUTCHours(0, 0, 0));
-  const endToday = new Date(new Date().setUTCHours(23, 59, 59));
-
-  //Get and render the fixtures documents from the collection
-  const fixtures = await Fixtures.aggregate([
-    {
-      $match: {
-        Date: {
-          $gte: startToday,
-          $lte: endToday,
-        },
-        Status: {
-          $ne: 'Finished',
-        },
-      },
-    },
-    { $sort: { Date: 1, MatchNumber: 1 } },
-  ]);
-
   res.status(200).render('account_settings');
 });
 
