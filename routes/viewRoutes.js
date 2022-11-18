@@ -1,10 +1,12 @@
 const express = require('express');
 const viewController = require('../controller/viewController');
 const authController = require('../controller/authController');
+const fixtureController = require('../controller/fixtureController');
 
 const router = express.Router();
 
 router.get('/', authController.isLoggedIn, viewController.getHome);
+
 router.get('/login', viewController.login);
 router.get('/sign-up', viewController.signUp);
 
