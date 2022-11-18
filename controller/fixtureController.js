@@ -6,24 +6,15 @@ const capitalize = require('./../utils/capitalize');
 const helperController = require('../controller/helperController');
 
 //Gets the current fixtures list for the database
-exports.getFixtures = catchAsync(async (req, res) => {
+exports.getFixture = catchAsync(async (req, res) => {
   const start = new Date();
 
   const [HomeTeam, AwayTeam] = req.params.fixture.split('-');
 
-  const data = await Fixture.aggregate([
-    {
-      $match: {
-        HomeTeam,
-        AwayTeam,
-      },
-    },
-    {
-      $project: {
-        'Statistics._id': 0,
-      },
-    },
-  ]);
+  const data = await Fixture.find({
+    HomeTeam,
+    AwayTeam,
+  });
 
   if (!data.length) {
     return next(new AppError('That fixture does not exist'), 404);
