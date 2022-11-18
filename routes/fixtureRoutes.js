@@ -13,7 +13,7 @@ router
   .patch(authController.protect, fixtureController.updateFixtureStats);
 
 //Route to get a specific fixture
-router.route('/getFixtures/:fixture').get(fixtureController.getFixtures);
+router.route('/getFixtures/:fixture').get(fixtureController.getFixture);
 
 //Route to get a average stats for a team
 router.route('/getAverageStats/:team').get(fixtureController.getAverageStats);
