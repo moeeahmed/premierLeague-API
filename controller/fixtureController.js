@@ -2,7 +2,6 @@ const getData = require('./dataController');
 const Fixture = require('../models/fixtureModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
-const APIFeatures = require('./../utils/apifeatures');
 const capitalize = require('./../utils/capitalize');
 const helperController = require('../controller/helperController');
 
@@ -10,17 +9,12 @@ const helperController = require('../controller/helperController');
 exports.getFixture = catchAsync(async (req, res) => {
   const start = new Date();
 
-  const features = new APIFeatures(Fixture.find(), req.query).filter().sort();
-
-  const fixture = await features.query;
-
-  if (!fixture.length) {
-    return next(new AppError('That fixture does not exist'), 404);
-  }
+  const fixture = await helperController.getFixture(req.query);
 
   res.status(200).json({
     status: 'Success',
     duration: `${new Date() - start}ms`,
+    results: `${fixture.length}`,
     fixture,
   });
 });

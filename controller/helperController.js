@@ -1,4 +1,5 @@
 const Fixture = require('../models/fixtureModel');
+const APIFeatures = require('./../utils/apifeatures');
 
 //Compute stadings for fixtures
 exports.computeStanding = async function () {
@@ -145,4 +146,21 @@ exports.computeStanding = async function () {
 
   //return the table (will return a promise which we'll need to await)
   return table;
+};
+
+//Gets a specific fixture or fixtures
+exports.getFixture = async (query) => {
+  const features = new APIFeatures(Fixture.find(), query)
+    .filter()
+    .sort()
+    .limitField()
+    .paginate();
+
+  const fixture = await features.query;
+
+  if (!fixture.length) {
+    return next(new AppError('That fixture does not exist'), 404);
+  }
+
+  return fixture;
 };

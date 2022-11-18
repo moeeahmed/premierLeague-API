@@ -118,17 +118,11 @@ exports.getAllFixtures = catchAsync(async (_, res) => {
   ]);
 
   //Get the latest fixture document from the collection
-  const [latestFixture] = await Fixtures.aggregate([
-    { $match: { Status: 'Finished' } },
-    { $sort: { Date: -1 } },
-    { $limit: 1 },
-    {
-      $project: {
-        _id: 0,
-        'Statistics._id': 0,
-      },
-    },
-  ]);
+  const [latestFixture] = await helperController.getFixture({
+    Status: 'Finished',
+    sort: 'DateDsc',
+    limit: 1,
+  });
 
   res.status(200).render('fixtures', { allFixtures, latestFixture });
 });
