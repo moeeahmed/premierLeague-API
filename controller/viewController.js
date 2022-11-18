@@ -1,7 +1,7 @@
-const Table = require('../models/tableModel');
 const Users = require('../models/userModel');
 const Fixtures = require('../models/fixtureModel');
 const catchAsync = require('../utils/catchAsync');
+const helperController = require('../controller/helperController');
 
 //Login page render
 exports.login = catchAsync(async (_, res) => {
@@ -22,16 +22,7 @@ exports.getHome = catchAsync(async (_, res) => {
   const startToday = new Date(new Date().setUTCHours(0, 0, 0, 0));
   const endToday = new Date(new Date().setUTCHours(23, 59, 59));
 
-  //Get and render the table documents from the collection
-  const standings = await Table.aggregate([
-    { $sort: { points: -1, goalsDiff: -1 } },
-    {
-      $project: {
-        _id: 0,
-        __v: 0,
-      },
-    },
-  ]);
+  const standings = await helperController.computeStanding();
 
   //Get and render the results documents from the collection
   const results = await Fixtures.aggregate([
@@ -150,8 +141,6 @@ exports.getAllFixtures = catchAsync(async (_, res) => {
   res.status(200).render('fixtures', { allFixtures, latestFixture });
 });
 
-//This may be made redundant, will try to create table from fixtures
-//Rather than having a whole seperate document
 exports.updateStats = catchAsync(async (_, res) => {
   const fixtures = await Fixtures.aggregate([
     {
