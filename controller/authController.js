@@ -13,15 +13,13 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, req, res) => {
+const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
       Date.now() + process.env.JWK_COOKIE_EXPIRES_IN * 86_400_000
     ),
-    secure: true,
     httpOnly: true,
-    secure: req.secure || req.headers('x-forwarded-proto') === 'https',
   };
 
   res.cookie('jwt', token, cookieOptions);
@@ -45,7 +43,7 @@ exports.signup = catchAsync(async (req, res) => {
     role: req.body.role,
   });
 
-  createSendToken(newUser, 201, req, res);
+  createSendToken(newUser, 201, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -64,7 +62,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //send jwt to client
-  createSendToken(user, 200, req, res);
+  createSendToken(user, 200, res);
 });
 
 exports.logout = catchAsync(async (_, res) => {
@@ -90,7 +88,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
   await user.save();
 
-  createSendToken(user, 200, req, res);
+  createSendToken(user, 200, res);
 });
 
 //forgot password route middleware
