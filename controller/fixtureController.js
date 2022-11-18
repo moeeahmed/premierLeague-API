@@ -248,8 +248,143 @@ exports.getAverageStats = catchAsync(async (req, res) => {
 });
 
 exports.makeTableFromFixtures = catchAsync(async (req, res, next) => {
+  //get list of unique teams in the league
+  const teamsDoc = await Fixture.aggregate([
+    {
+      $group: {
+        _id: '$HomeTeam',
+      },
+    },
+  ]);
+
+  //flatten object into a singular array with all the teams
+  const teams = teamsDoc.map((obj) => obj._id);
+
+  let table = await Promise.all(
+    teams.map(
+      async (team) =>
+        (
+          await Fixture.aggregate([
+            { $match: { $or: [{ HomeTeam: team }, { AwayTeam: team }] } },
+            { $match: { Status: 'Finished' } },
+            {
+              $project: {
+                _id: 0,
+                Team: team,
+                form: {
+                  $cond: [
+                    { $eq: ['$HomeTeam', team] },
+                    {
+                      $cond: [
+                        { $gt: ['$HomeTeamScore', '$AwayTeamScore'] },
+                        'W',
+                        {
+                          $cond: [
+                            { $eq: ['$HomeTeamScore', '$AwayTeamScore'] },
+                            'D',
+                            'L',
+                          ],
+                        },
+                      ],
+                    },
+                    {
+                      $cond: [
+                        { $gt: ['$AwayTeamScore', '$HomeTeamScore'] },
+                        'W',
+                        {
+                          $cond: [
+                            { $eq: ['$HomeTeamScore', '$AwayTeamScore'] },
+                            'D',
+                            'L',
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+                goalsFor: {
+                  $cond: [
+                    { $eq: ['$HomeTeam', team] },
+                    { $sum: '$HomeTeamScore' },
+                    { $sum: '$AwayTeamScore' },
+                  ],
+                },
+                goalsAgainst: {
+                  $cond: [
+                    { $eq: ['$HomeTeam', team] },
+                    { $sum: '$AwayTeamScore' },
+                    { $sum: '$HomeTeamScore' },
+                  ],
+                },
+                wins: {
+                  $cond: [
+                    { $eq: ['$HomeTeam', team] },
+                    {
+                      $cond: [
+                        { $gt: ['$HomeTeamScore', '$AwayTeamScore'] },
+                        1,
+                        0,
+                      ],
+                    },
+                    {
+                      $cond: [
+                        { $gt: ['$AwayTeamScore', '$HomeTeamScore'] },
+                        1,
+                        0,
+                      ],
+                    },
+                  ],
+                },
+                draws: {
+                  $cond: [{ $eq: ['$HomeTeamScore', '$AwayTeamScore'] }, 1, 0],
+                },
+                Stats: {
+                  $cond: [
+                    { $eq: ['$HomeTeam', team] },
+                    { $arrayElemAt: ['$Statistics', 0] },
+                    { $arrayElemAt: ['$Statistics', 1] },
+                  ],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: '$Team',
+                form: { $push: '$form' },
+                numOfGames: { $sum: 1 },
+                GF: { $sum: '$goalsFor' },
+                GA: { $sum: '$goalsAgainst' },
+                wins: { $sum: '$wins' },
+                draws: { $sum: '$draws' },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                Team: '$_id',
+                Form: '$form',
+                Played: '$numOfGames',
+                GF: '$GF',
+                GA: '$GA',
+                GD: { $subtract: ['$GF', '$GA'] },
+                Wins: '$wins',
+                Losses: {
+                  $subtract: ['$numOfGames', { $add: ['$wins', '$draws'] }],
+                },
+                Draws: '$draws',
+                Points: { $add: [{ $multiply: [3, '$wins'] }, '$draws'] },
+              },
+            },
+          ])
+        )[0]
+    )
+  );
+
+  //Sort array of objects by points accumulated
+  table.sort((a, b) => b.Points - a.Points);
+
   res.status(200).json({
     status: 'Success',
-    message: 'Suck your mum',
+    table,
   });
 });
