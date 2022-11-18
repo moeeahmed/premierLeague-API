@@ -2,6 +2,7 @@ const getData = require('./dataController');
 const Fixture = require('../models/fixtureModel');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const APIFeatures = require('./../utils/apifeatures');
 const capitalize = require('./../utils/capitalize');
 const helperController = require('../controller/helperController');
 
@@ -9,27 +10,24 @@ const helperController = require('../controller/helperController');
 exports.getFixture = catchAsync(async (req, res) => {
   const start = new Date();
 
-  const [HomeTeam, AwayTeam] = req.params.fixture.split('-');
+  const features = new APIFeatures(Fixture.find(), req.query).filter().sort();
 
-  const data = await Fixture.find({
-    HomeTeam,
-    AwayTeam,
-  });
+  const fixture = await features.query;
 
-  if (!data.length) {
+  if (!fixture.length) {
     return next(new AppError('That fixture does not exist'), 404);
   }
 
   res.status(200).json({
-    status: 'success',
-    data,
+    status: 'Success',
     duration: `${new Date() - start}ms`,
+    fixture,
   });
 });
 
 exports.getAverageStats = catchAsync(async (req, res) => {
+  const start = new Date();
   //lets get all fixture related to the requested team that are finished
-
   const team = capitalize(req.params.team);
 
   const result = await Fixture.aggregate([
@@ -180,14 +178,21 @@ exports.getAverageStats = catchAsync(async (req, res) => {
     },
   ]);
 
-  res.status(200).json({ team, result });
+  res.status(200).json({
+    status: 'Success',
+    duration: `${new Date() - start}ms`,
+    team,
+    result,
+  });
 });
 
 exports.tableStanding = catchAsync(async (_, res) => {
+  const start = new Date();
   const table = await helperController.computeStanding();
 
   res.status(200).json({
     status: 'Success',
+    duration: `${new Date() - start}ms`,
     table,
   });
 });
@@ -211,7 +216,7 @@ exports.updateFixture = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
-    status: 'success',
+    status: 'Success',
     duration: `${new Date() - start}ms`,
   });
 });
@@ -244,7 +249,7 @@ exports.updateFixtureStats = catchAsync(async (req, res) => {
   });
 
   res.status(201).json({
-    status: 'success',
+    status: 'Success',
     duration: `${new Date() - start}ms`,
   });
 });

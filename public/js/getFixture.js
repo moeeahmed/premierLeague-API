@@ -72,10 +72,10 @@ export const getFixture = async (HomeTeam, AwayTeam) => {
   try {
     const res = await axios({
       method: 'GET',
-      url: `/api/v1/fixture/getFixtures/${HomeTeam}-${AwayTeam}`,
+      url: `/api/v1/fixture/getFixtures?HomeTeam=${HomeTeam}&AwayTeam=${AwayTeam}`,
     });
 
-    const data = res.data.data[0];
+    const data = res.data.fixture[0];
 
     const [homeStats, awayStats] = data?.Statistics;
     let stats = '';

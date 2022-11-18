@@ -17282,11 +17282,11 @@ var getFixture = /*#__PURE__*/function () {
             _context2.next = 16;
             return (0, _axios.default)({
               method: 'GET',
-              url: "/api/v1/fixture/getFixtures/".concat(HomeTeam, "-").concat(AwayTeam)
+              url: "/api/v1/fixture/getFixtures?HomeTeam=".concat(HomeTeam, "&AwayTeam=").concat(AwayTeam)
             });
           case 16:
             res = _context2.sent;
-            data = res.data.data[0];
+            data = res.data.fixture[0];
             _data$Statistics = data === null || data === void 0 ? void 0 : data.Statistics, _data$Statistics2 = _slicedToArray(_data$Statistics, 2), homeStats = _data$Statistics2[0], awayStats = _data$Statistics2[1];
             stats = '';
             if (homeStats && awayStats) {
@@ -17866,7 +17866,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59710" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57650" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
