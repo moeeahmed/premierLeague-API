@@ -14,6 +14,11 @@ exports.computeStanding = async function () {
   //flatten object into a singular array with all the teams
   const teams = teamsDoc.map((obj) => obj._id);
 
+  //Use aggregation pipeline the data required in the following steps:
+  // 1) iterate through teams and query DB
+  // 2) accumulate required fields and group together by team name
+  //        Will need to calculate results using $cond states along with operators
+  // 3) map objs into array to get an array of objects
   let table = await Promise.all(
     teams.map(
       async (team) =>
@@ -138,5 +143,6 @@ exports.computeStanding = async function () {
   //Sort array of objects by points accumulated
   table.sort((a, b) => b.Points - a.Points);
 
+  //return the table (will return a promise which we'll need to await)
   return table;
 };

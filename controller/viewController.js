@@ -3,20 +3,6 @@ const Fixtures = require('../models/fixtureModel');
 const catchAsync = require('../utils/catchAsync');
 const helperController = require('../controller/helperController');
 
-//Login page render
-exports.login = catchAsync(async (_, res) => {
-  res.status(200).render('login', {
-    title: 'Log into you account',
-  });
-});
-
-//Signup page render
-exports.signUp = catchAsync(async (_, res) => {
-  res.status(200).render('sign_up', {
-    title: 'Sign up for an account',
-  });
-});
-
 //Home page render
 exports.getHome = catchAsync(async (_, res) => {
   const startToday = new Date(new Date().setUTCHours(0, 0, 0, 0));
@@ -71,6 +57,24 @@ exports.getHome = catchAsync(async (_, res) => {
   });
 });
 
+//Login page render
+exports.login = catchAsync(async (_, res) => {
+  res.status(200).render('login', {
+    title: 'Log into you account',
+  });
+});
+
+//Signup page render
+exports.signUp = catchAsync(async (_, res) => {
+  res.status(200).render('sign_up', {
+    title: 'Sign up for an account',
+  });
+});
+
+exports.resetPassword = catchAsync(async (_, res) => {
+  res.status(200).render('newPassword');
+});
+
 //Account page render
 exports.accountSettings = catchAsync(async (_, res) => {
   const startToday = new Date(new Date().setUTCHours(0, 0, 0));
@@ -93,6 +97,13 @@ exports.accountSettings = catchAsync(async (_, res) => {
   ]);
 
   res.status(200).render('account_settings');
+});
+
+exports.manageUsers = catchAsync(async (_, res) => {
+  //Get the latest fixture document from the collection
+  const users = await Users.find();
+
+  res.status(200).render('manage_users', { users });
 });
 
 //Fixture page render
@@ -166,15 +177,4 @@ exports.updateScore = catchAsync(async (_, res) => {
   ]);
 
   res.status(200).render('update_scores', { fixtures });
-});
-
-exports.manageUsers = catchAsync(async (_, res) => {
-  //Get the latest fixture document from the collection
-  const users = await Users.find();
-
-  res.status(200).render('manage_users', { users });
-});
-
-exports.resetPassword = catchAsync(async (_, res) => {
-  res.status(200).render('newPassword');
 });

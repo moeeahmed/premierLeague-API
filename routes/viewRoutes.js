@@ -4,21 +4,27 @@ const authController = require('../controller/authController');
 
 const router = express.Router();
 
+//Home page
 router.get('/', authController.isLoggedIn, viewController.getHome);
 
+//Authentication pages
 router.get('/login', viewController.login);
 router.get('/sign-up', viewController.signUp);
-
-router.get(
-  '/fixtures',
-  authController.isLoggedIn,
-  viewController.getAllFixtures
-);
-
+router.get('/account/resetPassword', viewController.resetPassword);
 router.get(
   '/account/settings',
   authController.isLoggedIn,
   viewController.accountSettings
+);
+router.get(
+  '/admin/manage-users',
+  authController.protect,
+  viewController.manageUsers
+);
+router.get(
+  '/fixtures',
+  authController.isLoggedIn,
+  viewController.getAllFixtures
 );
 
 router.get(
@@ -32,13 +38,5 @@ router.get(
   authController.protect,
   viewController.updateScore
 );
-
-router.get(
-  '/admin/manage-users',
-  authController.protect,
-  viewController.manageUsers
-);
-
-router.get('/account/resetPassword', viewController.resetPassword);
 
 module.exports = router;
