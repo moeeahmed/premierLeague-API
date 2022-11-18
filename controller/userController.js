@@ -45,14 +45,6 @@ exports.getAllUsers = catchAsync(async (_, res, next) => {
   });
 });
 
-exports.updatePassword = catchAsync(async (req, res, next) => {
-  const a = req.body;
-
-  res.status(200).json({
-    status: 'success',
-  });
-});
-
 exports.updateDetails = catchAsync(async (req, res, next) => {
   const filteredObj = filterObj(req.body, 'name', 'email');
 
@@ -72,10 +64,10 @@ exports.updateDetails = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteUser = catchAsync(async (req, res, next) => {
-  await User.findByIdAndUpdate(req.user.id, { active: false });
+  const user = await User.findByIdAndUpdate(req.user.id, { active: false });
 
   res.status(204).json({
     status: 'success',
-    data: null,
+    message: `${user.name}'s account has been deleted`,
   });
 });
