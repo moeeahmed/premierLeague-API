@@ -63,7 +63,7 @@ block content
                                 img(src=`/img/${latestFixture.AwayTeam.replace(/\s/g,'')}.png`)
                             h2.team-name  #{latestFixture.AwayTeam}
                 div.match--stats.slide-animation-UP
-                    -let[homeStats,awayStats] = latestFixture.Statistics 
+                    -let[homeStats,awayStats] = latestFixture.Statistics
                     each key of Object.keys(homeStats)
                         -let percentage = (homeStats[key] === awayStats[key]) ? 0.5 : parseInt(homeStats[key] || 0) / (parseInt(homeStats[key] || 0) + parseInt(awayStats[key] || 0))
                         p(style='font-size:16px;text-align:center'): strong #{key}           
