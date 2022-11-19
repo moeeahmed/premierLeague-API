@@ -11082,7 +11082,7 @@ exports.showAlert = showAlert;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.signUp = exports.setNewPassword = exports.reset = exports.logout = exports.login = void 0;
+exports.signUp = exports.setNewPassword = exports.reset = exports.logout = exports.login = exports.deleteAccount = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 var _alert = require("./alert");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -11298,6 +11298,46 @@ var setNewPassword = /*#__PURE__*/function () {
   };
 }();
 exports.setNewPassword = setNewPassword;
+var deleteAccount = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            _context6.next = 3;
+            return (0, _axios.default)({
+              method: 'DELETE',
+              url: '/api/v1/user/deleteAccount'
+            });
+          case 3:
+            res = _context6.sent;
+            if (res.data.status === 'success') {
+              (0, _alert.showAlert)('success', 'Account Deleted');
+              window.setTimeout(function () {
+                location.reload(true);
+                location.assign('/');
+              }, 1500);
+            }
+            _context6.next = 10;
+            break;
+          case 7:
+            _context6.prev = 7;
+            _context6.t0 = _context6["catch"](0);
+            (0, _alert.showAlert)('error', _context6.t0.response.data.message);
+          case 10:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 7]]);
+  }));
+  return function deleteAccount() {
+    return _ref6.apply(this, arguments);
+  };
+}();
+exports.deleteAccount = deleteAccount;
 },{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"update.js":[function(require,module,exports) {
 "use strict";
 
@@ -17516,6 +17556,7 @@ var signUpBtn = document.querySelector('.nav__el--cta ');
 var logoutBtn = document.querySelector('.nav__el--logout');
 var modalCloseBtns = document.querySelectorAll('.close');
 var resetPassBtn = document.querySelector('.reset-password');
+var deleteAcc = document.querySelector('.side-nav li:nth-child(2) a');
 
 //MODALS
 var loginModal = document.getElementById('login__modal');
@@ -17675,6 +17716,10 @@ resetPassBtn === null || resetPassBtn === void 0 ? void 0 : resetPassBtn.addEven
     var type = e.target.classList.value.split('--')[1];
     openModal(document.getElementById("".concat(type, "__modal")));
   });
+});
+deleteAcc === null || deleteAcc === void 0 ? void 0 : deleteAcc.addEventListener('click', function (e) {
+  e.preventDefault();
+  (0, _authentication.deleteAccount)();
 });
 modalCloseBtns.forEach(function (closeBtn) {
   closeBtn === null || closeBtn === void 0 ? void 0 : closeBtn.addEventListener('click', function (e) {
@@ -17866,7 +17911,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57650" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60934" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

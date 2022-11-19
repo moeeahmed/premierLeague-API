@@ -102,3 +102,22 @@ export const setNewPassword = async (obj) => {
     showAlert('error', err.response.data.message);
   }
 };
+
+export const deleteAccount = async () => {
+  try {
+    const res = await axios({
+      method: 'DELETE',
+      url: '/api/v1/user/deleteAccount',
+    });
+
+    if (res.data.status === 'success') {
+      showAlert('success', 'Account Deleted');
+      window.setTimeout(() => {
+        location.reload(true);
+        location.assign('/');
+      }, 1500);
+    }
+  } catch (err) {
+    showAlert('error', err.response.data.message);
+  }
+};

@@ -7,6 +7,7 @@ mixin navItem(link, text, icon, active)
 nav.user-view__menu
     ul.side-nav
         +navItem('/account/settings', 'Settings')
+        +navItem('', 'Delete Account')
 
     - if (user.role === 'admin')
         .admin-nav

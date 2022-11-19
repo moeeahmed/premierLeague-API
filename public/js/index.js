@@ -1,6 +1,13 @@
 /* eslint-disable */
 import '@babel/polyfill';
-import { login, logout, signUp, reset, setNewPassword } from './authentication';
+import {
+  login,
+  logout,
+  signUp,
+  reset,
+  setNewPassword,
+  deleteAccount,
+} from './authentication';
 import {
   updateStatistics,
   updateScores,
@@ -15,6 +22,7 @@ const signUpBtn = document.querySelector('.nav__el--cta ');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const modalCloseBtns = document.querySelectorAll('.close');
 const resetPassBtn = document.querySelector('.reset-password');
+const deleteAcc = document.querySelector('.side-nav li:nth-child(2) a');
 
 //MODALS
 const loginModal = document.getElementById('login__modal');
@@ -121,6 +129,12 @@ resetPassBtn?.addEventListener('click', function (e) {
     openModal(document.getElementById(`${type}__modal`));
   })
 );
+
+deleteAcc?.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  deleteAccount();
+});
 
 modalCloseBtns.forEach((closeBtn) => {
   closeBtn?.addEventListener('click', function (e) {

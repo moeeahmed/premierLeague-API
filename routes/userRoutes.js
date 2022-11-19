@@ -38,12 +38,16 @@ router.patch(
 );
 
 router
-  .route('/deleteUser')
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    userController.deleteUser
-  );
+  .route('/deleteAccount')
+  .delete(authController.protect, authController.deleteAccount);
+
+// router
+//   .route('/deleteAccount')
+//   .delete(
+//     authController.protect,
+//     authController.restrictTo('admin'),
+//     userController.deleteUser
+//   );
 
 router
   .route('/getAllUsers')

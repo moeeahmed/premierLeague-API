@@ -34,6 +34,13 @@ const createSendToken = (user, statusCode, res) => {
   });
 };
 
+const logout = (res) => {
+  res.cookie('jwt', 'loggedout', {
+    expiresIn: new Date(Date.now() + 5000),
+    httpOnly: true,
+  });
+};
+
 exports.signup = catchAsync(async (req, res) => {
   const newUser = await User.create({
     name: req.body.name,
@@ -55,10 +62,14 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //Check if user exist and password is correct
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select('+password +active');
 
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password', 401));
+  }
+
+  if (!user.active) {
+    return next(new AppError('This account has been deleted', 410));
   }
 
   //send jwt to client
@@ -66,11 +77,7 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = catchAsync(async (_, res) => {
-  res.cookie('jwt', 'loggedout', {
-    expiresIn: new Date(Date.now() + 5000),
-    httpOnly: true,
-  });
-
+  logout(res);
   res.status(200).json({
     status: 'success',
   });
@@ -156,6 +163,17 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     message: 'Password reset. Account recovered',
+  });
+});
+
+exports.deleteAccount = catchAsync(async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  logout(res);
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Account deleted',
   });
 });
 

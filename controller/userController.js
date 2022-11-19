@@ -7,7 +7,7 @@ const sharp = require('sharp');
 
 const multerStorage = multer.memoryStorage();
 
-const multerFilter = (req, file, cb) => {
+const multerFilter = (_, file, cb) => {
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
   } else {
@@ -33,7 +33,7 @@ exports.resizePhoto = catchAsync(async (req, _, next) => {
   next();
 });
 
-exports.getAllUsers = catchAsync(async (_, res, next) => {
+exports.getAllUsers = catchAsync(async (_, res) => {
   const users = await User.find();
 
   res.status(200).json({
@@ -45,7 +45,7 @@ exports.getAllUsers = catchAsync(async (_, res, next) => {
   });
 });
 
-exports.updateDetails = catchAsync(async (req, res, next) => {
+exports.updateDetails = catchAsync(async (req, res) => {
   const filteredObj = filterObj(req.body, 'name', 'email');
 
   if (req.file) filteredObj.photo = req.file.filename;
@@ -63,7 +63,7 @@ exports.updateDetails = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteUser = catchAsync(async (req, res, next) => {
+exports.deleteAccount = catchAsync(async (req, res) => {
   const user = await User.findByIdAndUpdate(req.user.id, { active: false });
 
   res.status(204).json({
