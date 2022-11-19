@@ -42,6 +42,7 @@ const updateStats = document.getElementById('update_stats');
 const individualGames = document.querySelectorAll('.game');
 const newPasswordSet = document.querySelector('.form--newPassword');
 const teamLogo = document.querySelector('.team-logo');
+const dropDownFilter = document.querySelector('.dropDownFilter');
 
 //Functions
 const addListenertoLogo = function () {
@@ -207,6 +208,11 @@ updateStats?.addEventListener('click', async function (e) {
   updateBtnText(document.getElementById('update_stats'), 'Updating...');
   await updateStatistics(fixtureIds);
   updateBtnText(document.getElementById('update_stats'), 'Update Stats');
+});
+
+dropDownFilter?.addEventListener('click', function (e) {
+  e.preventDefault();
+  alert('hi');
 });
 
 individualGames?.forEach((btn) =>

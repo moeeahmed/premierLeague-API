@@ -940,7 +940,11 @@ progress[value]::-webkit-progress-bar {
   height: 50vh;
   overflow-y: scroll;
 }
-
+.filter {
+  transform: translate(13vw, -1px);
+  font-size: 25px;
+  cursor: pointer;
+}
 /**----- Modals -----**/
 .modal {
   display: none;

@@ -17575,6 +17575,7 @@ var updateStats = document.getElementById('update_stats');
 var individualGames = document.querySelectorAll('.game');
 var newPasswordSet = document.querySelector('.form--newPassword');
 var teamLogo = document.querySelector('.team-logo');
+var dropDownFilter = document.querySelector('.dropDownFilter');
 
 //Functions
 var addListenertoLogo = function addListenertoLogo() {
@@ -17848,6 +17849,10 @@ updateStats === null || updateStats === void 0 ? void 0 : updateStats.addEventLi
     return _ref8.apply(this, arguments);
   };
 }());
+dropDownFilter === null || dropDownFilter === void 0 ? void 0 : dropDownFilter.addEventListener('click', function (e) {
+  e.preventDefault();
+  alert('hi');
+});
 individualGames === null || individualGames === void 0 ? void 0 : individualGames.forEach(function (btn) {
   return btn.addEventListener('click', /*#__PURE__*/function () {
     var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(e) {
