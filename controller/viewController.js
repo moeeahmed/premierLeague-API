@@ -124,7 +124,10 @@ exports.getAllFixtures = catchAsync(async (_, res) => {
     limit: 1,
   });
 
-  res.status(200).render('fixtures', { allFixtures, latestFixture });
+  //get teams
+  const teams = await helperController.getTeam({ sort: 'Name' });
+
+  res.status(200).render('fixtures', { teams, allFixtures, latestFixture });
 });
 
 exports.updateStats = catchAsync(async (_, res) => {
