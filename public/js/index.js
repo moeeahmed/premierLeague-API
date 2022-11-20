@@ -28,6 +28,7 @@ const deleteAcc = document.querySelector('.side-nav li:nth-child(2) a');
 const loginModal = document.getElementById('login__modal');
 const signupModal = document.getElementById('cta__modal');
 const passResetModal = document.getElementById('passReset__modal');
+const dropdownContent = document.querySelector('.dropdown-content');
 
 //FORMS
 const signUpForm = document.querySelector('.form--signup');
@@ -42,7 +43,7 @@ const updateStats = document.getElementById('update_stats');
 const individualGames = document.querySelectorAll('.game');
 const newPasswordSet = document.querySelector('.form--newPassword');
 const teamLogo = document.querySelector('.team-logo');
-const dropDownFilter = document.querySelector('.dropDownFilter');
+const dropDownFilter = document.querySelector('.filter-icon');
 
 //Functions
 const addListenertoLogo = function () {
@@ -212,7 +213,7 @@ updateStats?.addEventListener('click', async function (e) {
 
 dropDownFilter?.addEventListener('click', function (e) {
   e.preventDefault();
-  alert('hi');
+  dropdownContent.classList.toggle('show');
 });
 
 individualGames?.forEach((btn) =>

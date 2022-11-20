@@ -17562,6 +17562,7 @@ var deleteAcc = document.querySelector('.side-nav li:nth-child(2) a');
 var loginModal = document.getElementById('login__modal');
 var signupModal = document.getElementById('cta__modal');
 var passResetModal = document.getElementById('passReset__modal');
+var dropdownContent = document.querySelector('.dropdown-content');
 
 //FORMS
 var signUpForm = document.querySelector('.form--signup');
@@ -17575,7 +17576,7 @@ var updateStats = document.getElementById('update_stats');
 var individualGames = document.querySelectorAll('.game');
 var newPasswordSet = document.querySelector('.form--newPassword');
 var teamLogo = document.querySelector('.team-logo');
-var dropDownFilter = document.querySelector('.dropDownFilter');
+var dropDownFilter = document.querySelector('.filter-icon');
 
 //Functions
 var addListenertoLogo = function addListenertoLogo() {
@@ -17851,7 +17852,7 @@ updateStats === null || updateStats === void 0 ? void 0 : updateStats.addEventLi
 }());
 dropDownFilter === null || dropDownFilter === void 0 ? void 0 : dropDownFilter.addEventListener('click', function (e) {
   e.preventDefault();
-  alert('hi');
+  dropdownContent.classList.toggle('show');
 });
 individualGames === null || individualGames === void 0 ? void 0 : individualGames.forEach(function (btn) {
   return btn.addEventListener('click', /*#__PURE__*/function () {
@@ -17916,7 +17917,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60934" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59354" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

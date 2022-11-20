@@ -23,6 +23,17 @@ block content
         include _teamAvgStats
         section.leftside--allfixtures.results(style="margin-top:0;")
             .header.header__home
+                .dropdown-filter 
+                    span.filter-icon
+                        i.fa.fa-filter
+                    .dropdown-content
+                        ul.filterOptions
+                            li.filterName Team
+                            .filterList
+                                each team in teams
+                                    li.filterOption
+                                        input#checkbox1.filterCheckbox(type='checkbox' waschecked='false')
+                                        label.toggle(for='build') #{team}
                 h1 All fixtures
             .container__fixtures
                 each result in allFixtures

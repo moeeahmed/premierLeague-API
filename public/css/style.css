@@ -34,6 +34,11 @@ body {
   -webkit-user-select: none;
 }
 
+ol,
+ul {
+  list-style: none;
+}
+
 .main {
   background-color: #f7f7f7;
   padding: 8rem 6rem;
@@ -281,6 +286,8 @@ select option {
 .header h1 {
   font-size: 2em;
   font-weight: bold;
+  text-align: center;
+  width: 100%;
 }
 .heading-secondary {
   font-size: 2.25rem;
@@ -940,10 +947,78 @@ progress[value]::-webkit-progress-bar {
   height: 50vh;
   overflow-y: scroll;
 }
-.filter {
+.filter-icon {
   transform: translate(13vw, -1px);
   font-size: 25px;
   cursor: pointer;
+}
+.filter {
+  display: block;
+  position: absolute;
+  transform: translate(7vw, 78px);
+  width: 250px;
+  padding: 20px;
+  display: none;
+}
+.filterOptions .filterName {
+  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
+  color: white;
+  background-color: #444;
+}
+
+.filterOptions {
+  position: relative;
+  padding: 0px;
+  top: 20px;
+  border: 1px solid #999;
+  box-shadow: 0 1px 2px #aaa;
+  border-radius: 3px;
+}
+
+.changedFilterItem {
+  background-color: #fddb9e;
+  color: #000;
+  font-weight: bold;
+}
+
+.filterOptions li {
+  display: list-item;
+  text-align: -webkit-match-parent;
+  position: relative;
+  padding: 7px 15px 7px 10px;
+  line-height: 21px;
+  font-size: 14px;
+  color: #444;
+  background-color: white;
+  border-bottom: 1px solid #e6ebed;
+}
+
+.filterOption label {
+  padding: 10px;
+}
+
+.filterList {
+  max-height: 30rem;
+  overflow-y: scroll;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 185px;
+  left: -50px;
+  z-index: 1;
+}
+
+.dropdown-filter {
+  position: relative;
+  display: inline-block;
+}
+
+.show {
+  display: block !important;
 }
 /**----- Modals -----**/
 .modal {
