@@ -4,9 +4,9 @@ block append head
     title='Football API | Fixtures'
 
 
-mixin fixtures(fixture)
+mixin fixtures(fixture,gameday)
     -var duration = moment.duration(moment(new Date()).diff(fixture.Date, 'minutes'));
-    .game(data-fixture=`${fixture.HomeTeam}vs${fixture.AwayTeam}`).flex-bar
+    .game(data-fixture=`${fixture.HomeTeam}vs${fixture.AwayTeam}` data-gameday=`${gameday}`).flex-bar
         p.home__team(style={'text-align': 'right', 'width':'40%'}) #{fixture.HomeTeam}  
         if fixture.Status == 'Not Started'
             p.score  #{moment(fixture.Date).format('HH:mm')}
@@ -32,14 +32,15 @@ block content
                             .filterList
                                 each team in teams
                                     li.filterOption
-                                        input#checkbox1.filterCheckbox(type='checkbox' waschecked='false')
+                                        input#checkbox1.filterCheckbox(type='checkbox' wasChecked='false')
                                         label.toggle(for='build') #{team}
                 h1 All fixtures
             .container__fixtures
-                each result in allFixtures
-                    span.time #{moment(result._id).format('dddd Do MMMM YYYY')}
+                each result,index in allFixtures
+                    -var gameday = allFixtures.length - index
+                    span.time(data-gameday=`${gameday}`) #{moment(result._id).format('dddd Do MMMM YYYY')}
                     each game in result.results
-                        +fixtures(game)
+                        +fixtures(game,gameday)
         section.rightside--fixtureupdate.fixturesstats
             .header.header__matchStats
                 h1 #{latestFixture.HomeTeam} vs #{latestFixture.AwayTeam} Match Statistics

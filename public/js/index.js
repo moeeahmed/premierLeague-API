@@ -15,6 +15,7 @@ import {
   updateDetails,
 } from './update';
 import { getFixture, getAvgStats } from './getFixture';
+import { doc } from 'prettier';
 
 //BUTTONS
 const loginBtn = document.querySelector('.nav__el--login');
@@ -28,7 +29,9 @@ const deleteAcc = document.querySelector('.side-nav li:nth-child(2) a');
 const loginModal = document.getElementById('login__modal');
 const signupModal = document.getElementById('cta__modal');
 const passResetModal = document.getElementById('passReset__modal');
-const dropdownContent = document.querySelector('.dropdown-content');
+const dropdownContents = document.querySelector('.dropdown-content');
+const dropdownContent = document.querySelectorAll('.filterOption');
+const fixturesContainer = document.querySelector('.container__fixtures');
 
 //FORMS
 const signUpForm = document.querySelector('.form--signup');
@@ -66,7 +69,22 @@ const openModal = function (modal) {
 };
 
 const closeModal = (modal) => (modal.style.display = 'none');
+
 const updateBtnText = (el, text) => (el.textContent = text);
+
+const filter = function (team1, team2 = '') {
+  individualGames.forEach((game) => {
+    if (
+      game.dataset.fixture.includes(team1) &&
+      game.dataset.fixture.includes(team2)
+    ) {
+      document.querySelector(
+        `[data-gameday="${game.dataset.gameday}"]`
+      ).style.display = 'flex';
+      game.style.display = 'flex';
+    }
+  });
+};
 
 //EventListeners
 signUpForm?.addEventListener('submit', async function (e) {
@@ -213,7 +231,7 @@ updateStats?.addEventListener('click', async function (e) {
 
 dropDownFilter?.addEventListener('click', function (e) {
   e.preventDefault();
-  dropdownContent.classList.toggle('show');
+  dropdownContents.classList.toggle('show');
 });
 
 individualGames?.forEach((btn) =>
@@ -235,6 +253,34 @@ newPasswordSet?.addEventListener('submit', function (e) {
   const passwordConfirm = document.getElementById('passwordConfirmReset').value;
 
   setNewPassword({ token, password, passwordConfirm });
+});
+
+dropdownContent.forEach((listItem) => {
+  listItem?.addEventListener('change', function (e) {
+    e.preventDefault();
+
+    fixturesContainer.childNodes.forEach((e) => (e.style.display = 'none'));
+
+    document
+      .querySelectorAll('input[type=checkbox]')
+      .forEach((el) => (el.disabled = false));
+
+    if (document.querySelectorAll(':checked').length === 2) {
+      document.querySelectorAll('input[type=checkbox]').forEach((el) => {
+        if (!el.checked) el.disabled = true;
+      });
+    }
+
+    if (document.querySelectorAll(':checked').length === 0) {
+      fixturesContainer.childNodes.forEach((e) => (e.style.display = 'flex'));
+      return;
+    }
+
+    const x = document.querySelectorAll(':checked')[0]?.nextSibling.textContent;
+    const y = document.querySelectorAll(':checked')[1]?.nextSibling.textContent;
+
+    if (x || y) filter(x, y);
+  });
 });
 
 if (teamLogo) addListenertoLogo();
