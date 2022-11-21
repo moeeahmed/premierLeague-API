@@ -1,6 +1,8 @@
 import axios from 'axios';
 import moment from 'moment/moment';
 import { showAlert } from './alert';
+import { Chart } from 'chart.js/auto';
+import { transparentize } from '/chartUtils.js';
 
 export const getAvgStats = async (id) => {
   const overallStats = document.querySelectorAll('.avgTeam-stats dd');
@@ -8,7 +10,6 @@ export const getAvgStats = async (id) => {
   const statsList = document.querySelector('.stats--list');
   const team = document.querySelector('.avgTeam-info h2');
   const teamForm = document.querySelector('.avgTeam-info .team-form');
-
   const color = { L: 'red', D: 'grey', W: 'green' };
 
   try {
@@ -37,14 +38,47 @@ export const getAvgStats = async (id) => {
 
     teamImg.src = `/img/${res.data.team.replace(/\s/g, '')}.png`;
 
-    let html = '';
-    statsList.textContent = '';
-    for (const [key, value] of Object.entries(data.avgStats)) {
-      html += `<p><strong>${key}:  </strong>${value.toFixed(2)}</p>`;
-    }
+    const keys = Object.keys(data.avgStats).map((el) => el);
+    const values = Object.values(data.avgStats).map((el) => el);
 
-    statsList.insertAdjacentHTML('afterbegin', html);
+    const dataa = {
+      labels: keys,
+      datasets: [
+        {
+          label: res.data.team,
+          data: values,
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: transparentize(255, 99, 132, 0.5),
+        },
+      ],
+    };
+
+    const chart = new Chart(document.getElementById('acquisitions'), {
+      type: 'radar',
+      data: dataa,
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: false,
+            text: 'Average Stats this season:',
+          },
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
+
+    // let html = '';
+    // statsList.textContent = '';
+    // for (const [key, value] of Object.entries(data.avgStats)) {
+    //   html += `<p><strong>${key}:  </strong>${value.toFixed(2)}</p>`;
+    // }
+
+    // statsList.insertAdjacentHTML('afterbegin', html);
   } catch (err) {
+    console.log(err);
     showAlert('error', 'error getting details');
   }
 };

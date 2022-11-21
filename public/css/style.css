@@ -862,7 +862,7 @@ progress[value]::-webkit-progress-bar {
   background-color: gainsboro;
   display: flex;
   flex-shrink: 1;
-  transform: translate(-100px, -133px);
+  transform: translate(-50px, -100px);
   margin-bottom: -80px;
 }
 .avgTeam-info {
@@ -924,13 +924,17 @@ progress[value]::-webkit-progress-bar {
 }
 .average__stats--display {
   margin: 0 auto;
-  width: 450px;
-  height: 500px;
+  width: 30vw;
+  max-height: 70vh;
   background-color: #fff;
   box-shadow: 0 2.5rem 8rem 2rem rgb(0 0 0 / 6%);
-  padding: 5rem 7rem;
   border-radius: 5px;
 }
+
+.average__stats--display .close {
+  transform: translate(-44px, 23px);
+}
+
 .stats--list {
   font-size: 1.7em;
   text-transform: capitalize;
