@@ -48,7 +48,7 @@ block content
                 div.match--overview 
                     .column.slide-animation-FL 
                         .team.team--home
-                            .team-logo(data-team=`${latestFixture.HomeTeam.replace(/\s/g,'')}`)
+                            .team-logo(data-team=`${latestFixture.HomeTeam}`)
                                 img(src=`/img/${latestFixture.HomeTeam.replace(/\s/g,'')}.png`)
                             h2.team-name #{latestFixture.HomeTeam}
                     .column.fadeIn-animation
@@ -71,7 +71,7 @@ block content
                                 strong #{latestFixture.Referee.split(',')[0]}
                     .column.slide-animation-FR
                         .team.team--away
-                            .team-logo(data-team=`${latestFixture.AwayTeam.replace(/\s/g,'')}`)
+                            .team-logo(data-team=`${latestFixture.AwayTeam}`)
                                 img(src=`/img/${latestFixture.AwayTeam.replace(/\s/g,'')}.png`)
                             h2.team-name  #{latestFixture.AwayTeam}
                 div.match--stats.slide-animation-UP
