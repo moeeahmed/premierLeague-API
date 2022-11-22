@@ -53,7 +53,10 @@ export const getAvgStats = async (id) => {
       ],
     };
 
-    const chart = new Chart(document.getElementById('acquisitions'), {
+    const chartExist = Chart.getChart('acquisitions'); // <canvas> id
+    if (chartExist) chartExist.destroy();
+
+    new Chart(document.getElementById('acquisitions'), {
       type: 'radar',
       data: dataa,
       options: {

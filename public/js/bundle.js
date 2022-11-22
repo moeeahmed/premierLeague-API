@@ -32520,7 +32520,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var getAvgStats = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(id) {
-    var overallStats, teamImg, statsList, team, teamForm, color, res, data, _i, _Object$entries, _Object$entries$_i, index, el, html, keys, values, dataa, chart;
+    var overallStats, teamImg, statsList, team, teamForm, color, res, data, _i, _Object$entries, _Object$entries$_i, index, el, html, keys, values, dataa, chartExist;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -32586,7 +32586,9 @@ var getAvgStats = /*#__PURE__*/function () {
                 backgroundColor: (0, _chartUtils.transparentize)(255, 99, 132, 0.5)
               }]
             };
-            chart = new _auto.Chart(document.getElementById('acquisitions'), {
+            chartExist = _auto.Chart.getChart('acquisitions'); // <canvas> id
+            if (chartExist) chartExist.destroy();
+            new _auto.Chart(document.getElementById('acquisitions'), {
               type: 'radar',
               data: dataa,
               options: {
@@ -32601,25 +32603,28 @@ var getAvgStats = /*#__PURE__*/function () {
                   }
                 }
               }
-            }); // let html = '';
+            });
+
+            // let html = '';
             // statsList.textContent = '';
             // for (const [key, value] of Object.entries(data.avgStats)) {
             //   html += `<p><strong>${key}:  </strong>${value.toFixed(2)}</p>`;
             // }
+
             // statsList.insertAdjacentHTML('afterbegin', html);
-            _context.next = 38;
+            _context.next = 40;
             break;
-          case 34:
-            _context.prev = 34;
+          case 36:
+            _context.prev = 36;
             _context.t0 = _context["catch"](6);
             console.log(_context.t0);
             (0, _alert.showAlert)('error', 'error getting details');
-          case 38:
+          case 40:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[6, 34]]);
+    }, _callee, null, [[6, 36]]);
   }));
   return function getAvgStats(_x) {
     return _ref.apply(this, arguments);
@@ -52924,7 +52929,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52862" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51253" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
