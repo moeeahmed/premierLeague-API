@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment/moment';
 import { showAlert } from './alert';
 import { Chart } from 'chart.js/auto';
-import { transparentize } from '/chartUtils.js';
+import { randomRGBA, transparentize } from '/chartUtils.js';
 
 export const getAvgStats = async (id) => {
   const overallStats = document.querySelectorAll('.avgTeam-stats dd');
@@ -40,6 +40,9 @@ export const getAvgStats = async (id) => {
 
     const keys = Object.keys(data.avgStats).map((el) => el);
     const values = Object.values(data.avgStats).map((el) => el);
+    const randomColor = randomRGBA();
+
+    console.log(...randomColor);
 
     const dataa = {
       labels: keys,
@@ -47,8 +50,8 @@ export const getAvgStats = async (id) => {
         {
           label: res.data.team,
           data: values,
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: transparentize(255, 99, 132, 0.5),
+          borderColor: `rgba(${randomColor.join(',')})`,
+          backgroundColor: transparentize(...randomColor),
         },
       ],
     };
@@ -72,14 +75,6 @@ export const getAvgStats = async (id) => {
         },
       },
     });
-
-    // let html = '';
-    // statsList.textContent = '';
-    // for (const [key, value] of Object.entries(data.avgStats)) {
-    //   html += `<p><strong>${key}:  </strong>${value.toFixed(2)}</p>`;
-    // }
-
-    // statsList.insertAdjacentHTML('afterbegin', html);
   } catch (err) {
     console.log(err);
     showAlert('error', 'error getting details');
