@@ -82,7 +82,7 @@ exports.accountSettings = catchAsync(async (_, res) => {
 
 exports.manageUsers = catchAsync(async (_, res) => {
   //Get the latest fixture document from the collection
-  const users = await Users.find();
+  const users = await Users.find().select('+active');
 
   res.status(200).render('manage_users', { users });
 });
