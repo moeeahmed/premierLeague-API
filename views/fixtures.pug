@@ -76,7 +76,7 @@ block content
                             h2.team-name  #{latestFixture.AwayTeam}
                 div.match--stats.slide-animation-UP
                     -let[homeStats,awayStats] = latestFixture.Statistics
-                    each key of Object.keys(homeStats)
+                    each key of Object.keys(homeStats.toJSON())
                         -let percentage = (homeStats[key] === awayStats[key]) ? 0.5 : parseInt(homeStats[key] || 0) / (parseInt(homeStats[key] || 0) + parseInt(awayStats[key] || 0))
                         p(style='font-size:16px;text-align:center'): strong #{key}           
                         .stat__progress
