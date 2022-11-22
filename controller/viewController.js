@@ -124,8 +124,8 @@ exports.getAllFixtures = catchAsync(async (_, res) => {
     limit: 1,
   });
 
-  //get teams
-  const teams = await helperController.getTeam({ sort: 'Name' });
+  //get teamsa
+  const teams = await Fixtures.distinct('HomeTeam');
 
   res.status(200).render('fixtures', { teams, allFixtures, latestFixture });
 });

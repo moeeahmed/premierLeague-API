@@ -1,13 +1,6 @@
 const Fixture = require('../models/fixtureModel');
 const APIFeatures = require('./../utils/apifeatures');
 
-//Gets all teams in DB
-exports.getTeam = async () => {
-  const teams = await Fixture.distinct('HomeTeam');
-
-  return teams;
-};
-
 //Compute stadings for fixtures
 exports.computeStanding = async function () {
   //get list of unique teams in the league
