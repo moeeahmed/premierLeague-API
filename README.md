@@ -35,7 +35,7 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
     ![avgstats](https://user-images.githubusercontent.com/84675458/203622649-fb08abaf-6208-466c-84e9-527b220de827.PNG)
 
 # Endpoints
-## [GET] Get Fixture
+## [GET`#f03c15`] Get Fixture
 ```sh
 localhost:PORT/api/v1/fixture/getFixtures
 ```
@@ -120,7 +120,6 @@ axios(config)
                     "Passes %": "75%"
                 }
             ],
-            "FixtureId": 868077,
             "Referee": "Simon Hooper, England"
         }
     ]
