@@ -73,12 +73,12 @@ Get head to head between two teams by defining `HomeTeam` and `AwayTeam` paramet
 
 ### Parameters
 
-| Param    |           Example           |                         Description |
-| -------- | :-------------------------: | ----------------------------------: |
-| HomeTeam |           Arsenal           |                     Define HomeTeam |
-| AwayTeam |      Nottingham Forest      |                     Define AwayTeam |
-| team     |           Man Utd           |                         Define team |
-| dateFom  | '2022-11-05' ('YYYY-MM-DD') |  Define fixtures after certain date |
+| Param    | Example                     | Description                         |
+| -------- | --------------------------- | ----------------------------------- |
+| HomeTeam | Arsenal                     | Define HomeTeam                     |
+| AwayTeam | Nottingham Forest           | Define AwayTeam                     |
+| team     | Man Utd                     | Define team                         |
+| dateFom  | '2022-11-05' ('YYYY-MM-DD') | Define fixtures after certain date  |
 | dateTo   | '2022-11-13' ('YYYY-MM-DD') | Define fixtures before certain date |
 
 ### Request:
