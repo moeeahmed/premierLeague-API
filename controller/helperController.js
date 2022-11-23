@@ -142,9 +142,15 @@ exports.computeStanding = async function () {
 //Gets a specific fixture or fixtures
 exports.getFixture = async (query) => {
   //Specific team search, returns all their fixtures
-  if (query.hasOwnProperty('team')) {
-    query['$or'] = [{ HomeTeam: query.team }, { AwayTeam: query.team }];
+  if (query.hasOwnProperty('Team')) {
+    query['$or'] = [{ HomeTeam: query.Team }, { AwayTeam: query.Team }];
     delete query.team;
+  }
+
+  if (query.hasOwnProperty('date')) {
+    for (const [key, value] of Object.entries(query.date)) {
+      query.Date[key] = new Date(value);
+    }
   }
 
   const features = new APIFeatures(Fixture.find(), query)
