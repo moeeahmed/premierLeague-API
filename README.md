@@ -44,10 +44,10 @@ Get all fixtures in the league in the 22-23 season
 Get fixtures for a specific team by defining the `team` parameter
 
 Get head to head between two teams by defining `HomeTeam` and `AwayTeam` parameters
-
+### Request:
 ```js
 var axios = require('axios');
-var data = {HomeTeam: 'Arsenal', AwayTeam: 'Wolves'};
+var data = {HomeTeam: 'Arsenal', AwayTeam: 'Nottingham Forest'};
 
 var config = {
   method: 'get',
@@ -63,7 +63,7 @@ axios(config)
   console.log(error);
 });
 ```
-
+### Response:
 ```json
 {
     "status": "Success",
