@@ -47,12 +47,11 @@ Get head to head between two teams by defining `HomeTeam` and `AwayTeam` paramet
 
 ```js
 var axios = require('axios');
-var data = '';
+var data = {HomeTeam: 'Arsenal', AwayTeam: 'Wolves'};
 
 var config = {
   method: 'get',
   url: '{{URL}}api/v1/fixture/getFixtures',
-  headers: { },
   data : data
 };
 
@@ -64,6 +63,70 @@ axios(config)
   console.log(error);
 });
 ```
+
+```json
+{
+    "status": "Success",
+    "duration": "49ms",
+    "results": "1",
+    "fixture": [
+        {
+            "MatchNumber": 132,
+            "RoundNumber": 14,
+            "Date": "2022-10-30T14:00:00.000Z",
+            "Location": "Emirates Stadium",
+            "HomeTeam": "Arsenal",
+            "AwayTeam": "Nottingham Forest",
+            "HomeTeamScore": 5,
+            "AwayTeamScore": 0,
+            "Status": "Finished",
+            "Postponed": false,
+            "LastUpdated": "2022-10-24T14:21:45.145Z",
+            "Statistics": [
+                {
+                    "Shots on Goal": 10,
+                    "Shots off Goal": 5,
+                    "Total Shots": 24,
+                    "Blocked Shots": 9,
+                    "Shots insidebox": 18,
+                    "Shots outsidebox": 6,
+                    "Fouls": 9,
+                    "Corner Kicks": 9,
+                    "Offsides": 1,
+                    "Ball Possession": "69%",
+                    "Yellow Cards": null,
+                    "Red Cards": null,
+                    "Goalkeeper Saves": 2,
+                    "Total passes": 618,
+                    "Passes accurate": 551,
+                    "Passes %": "89%"
+                },
+                {
+                    "Shots on Goal": 2,
+                    "Shots off Goal": 2,
+                    "Total Shots": 5,
+                    "Blocked Shots": 1,
+                    "Shots insidebox": 2,
+                    "Shots outsidebox": 3,
+                    "Fouls": 8,
+                    "Corner Kicks": 4,
+                    "Offsides": 2,
+                    "Ball Possession": "31%",
+                    "Yellow Cards": 1,
+                    "Red Cards": null,
+                    "Goalkeeper Saves": 4,
+                    "Total passes": 275,
+                    "Passes accurate": 207,
+                    "Passes %": "75%"
+                }
+            ],
+            "FixtureId": 868077,
+            "Referee": "Simon Hooper, England"
+        }
+    ]
+}
+```
+
 ## [GET] Get Average Stats
 ## [GET] Get Table Standing
 
