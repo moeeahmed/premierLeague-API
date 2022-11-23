@@ -16,7 +16,7 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
 
     As well it shows past results
 
-    > ![](/public/img/homepage.png)
+    ![homepage](https://user-images.githubusercontent.com/84675458/203622653-b6fabf1b-d542-4507-bbb4-cbf3d326d68d.PNG)
 
 2.  You can deep dive into specific fixtures
 
@@ -26,10 +26,15 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
 
     Can see the statistics displayed for each fixture
 
-    > ![](/public/img/fixtures.png)
+    ![fixtures](https://user-images.githubusercontent.com/84675458/203622650-98c17e38-6c35-4012-bab4-8b450e6a0606.PNG)
 
 3.  If you click on a specific team logo on this page, it brings their average stats for that point of the season
 
     This use Chartjs to render a radar chart to get a graphical representation
+    
+    ![avgstats](https://user-images.githubusercontent.com/84675458/203622649-fb08abaf-6208-466c-84e9-527b220de827.PNG)
 
-    > ![](/public/img/avgstats.png)
+
+
+
+
