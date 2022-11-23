@@ -73,13 +73,13 @@ Get head to head between two teams by defining `HomeTeam` and `AwayTeam` paramet
 
 ### Parameters
 
-| Param    | Example                     | Description                                                        |
-| -------- | --------------------------- | ------------------------------------------------------------------ | ---------------------------------- |
-| HomeTeam | Arsenal                     | Define HomeTeam                                                    |
-| AwayTeam | Nottingham Forest           | Define AwayTeam                                                    |
-| Team     | Man Utd                     | Define team                                                        |
-| Date     | '2022-11-13' ('YYYY-MM-DD') | Define fixtures at certain dates. Use [gte]                        | [lte] to find games between ranges |
-| Status   | 'Finished')                 | Defines status of a game: `Finished, Live, Not Started, Postponed` |
+| Param    | Example                     | Description                                                                        |
+| -------- | --------------------------- | ---------------------------------------------------------------------------------- |
+| HomeTeam | Arsenal                     | Define HomeTeam                                                                    |
+| AwayTeam | Nottingham Forest           | Define AwayTeam                                                                    |
+| Team     | Man Utd                     | Define team                                                                        |
+| Date     | '2022-11-13' ('YYYY-MM-DD') | Define fixtures at certain dates. Use `[gte] , [lte]` to find games between ranges |
+| Status   | 'Finished')                 | Defines status of a game: `Finished, Live, Not Started, Postponed`                 |
 
 ### Request:
 
