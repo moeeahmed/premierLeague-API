@@ -35,7 +35,7 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
     ![avgstats](https://user-images.githubusercontent.com/84675458/203622649-fb08abaf-6208-466c-84e9-527b220de827.PNG)
 
 # Endpoints
-## [GET`#f03c15`] Get Fixture
+## [<mark style="background-color: #00FF00">GET</mark>] Get Fixture
 ```sh
 localhost:PORT/api/v1/fixture/getFixtures
 ```
@@ -126,6 +126,6 @@ axios(config)
 }
 ```
 
-## [GET] Get Average Stats
-## [GET] Get Table Standing
+## [<mark style="background-color: #00FF00">GET</mark>] Get Average Stats
+## [<mark style="background-color: #00FF00">GET</mark>] Get Table Standing
 
