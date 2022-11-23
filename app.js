@@ -59,14 +59,6 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(hpp());
-// app.use(
-//   hpp({
-//     whitelist: [
-//       'apps',
-//       'age',
-//     ],
-//   })
-// );
 
 app.use(compression());
 
