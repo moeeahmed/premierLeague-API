@@ -147,10 +147,11 @@ exports.getFixture = async (query) => {
     delete query.team;
   }
 
-  if (query.hasOwnProperty('date')) {
-    for (const [key, value] of Object.entries(query.date)) {
-      query.Date[key] = new Date(value);
-    }
+  if (typeof query.Date === 'string') {
+    query.Date = {
+      gte: new Date(new Date(query.Date).setUTCHours(0, 0, 0, 0)),
+      lte: new Date(new Date(query.Date).setUTCHours(23, 59, 59)),
+    };
   }
 
   const features = new APIFeatures(Fixture.find(), query)
