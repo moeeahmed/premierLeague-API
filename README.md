@@ -10,18 +10,18 @@ A webapp that provides data about the current 2022-2023 Premier League Season
 - [Additonal Info](#additonal-info)
   - [Information provided](#information-provided)
 - [Endpoints](#endpoints)
-  - [\[GET\] Get Fixture](#get-get-fixture)
+  - [`[GET]` Get Fixture](#get-get-fixture)
     - [Parameters](#parameters)
     - [Request:](#request)
     - [Response:](#response)
-  - [\[GET\] Get Average Stats](#get-get-average-stats)
+  - [`[GET]` Get Average Stats](#get-get-average-stats)
     - [Parameters](#parameters-1)
     - [Request:](#request-1)
     - [Response:](#response-1)
-  - [\[GET\] Get Table Standing](#get-get-table-standing)
+  - [`[GET]` Get Table Standing](#get-get-table-standing)
     - [Request:](#request-2)
     - [Response:](#response-2)
-  - [\[PATCH\] Update Fixtures](#patch-update-fixtures)
+  - [`[PATCH]` Update Fixtures](#patch-update-fixtures)
     - [Request:](#request-3)
     - [Response:](#response-3)
 
@@ -59,7 +59,7 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
 
 # Endpoints
 
-## [GET] Get Fixture
+## `[GET]` Get Fixture
 
 ```sh
 localhost:PORT/api/v1/fixture/getFixtures
@@ -166,7 +166,7 @@ axios(config)
 }
 ```
 
-## [GET] Get Average Stats
+## `[GET]` Get Average Stats
 
 ```sh
 localhost:PORT/api/v1/fixture/getAverageStats?team=Wolves
@@ -253,7 +253,7 @@ axios(config)
 }
 ```
 
-## [<mark style="background-color: #00FF00">GET</mark>] Get Table Standing
+## `[GET]` Get Table Standing
 
 ```sh
 localhost:PORT/api/v1/fixture/tableStanding
@@ -314,7 +314,7 @@ axios(config)
         ...
 ```
 
-## [PATCH] Update Fixtures
+## `[PATCH]` Update Fixtures
 
 ```sh
 localhost:PORT/api/v1/fixture/tableStanding
