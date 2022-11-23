@@ -581,8 +581,8 @@ progress[value]::-webkit-progress-bar {
 /**----- Forms -----**/
 .login-form,
 .signup-form,
-.newPassword-form,
-.resetPassword-form::before {
+.resetPassword-form,
+.newPassword-form {
   margin: 0 auto;
   max-width: 70rem;
   width: 100%;
@@ -592,6 +592,7 @@ progress[value]::-webkit-progress-bar {
   padding: 5rem 7rem;
   border-radius: 5px;
 }
+
 .form__input {
   display: block;
   font-family: inherit;
@@ -609,8 +610,6 @@ progress[value]::-webkit-progress-bar {
   border-radius: 4px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  /* Pseudo element (a visible thing that isn't really in the DOM).
-        Also needs -ms- */
 }
 .form__input:focus {
   outline: none;
