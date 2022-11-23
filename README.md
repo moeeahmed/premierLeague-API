@@ -204,4 +204,58 @@ axios(config)
 ```
 
 ## [<mark style="background-color: #00FF00">GET</mark>] Get Table Standing
+```sh
+localhost:PORT/api/v1/fixture/tableStanding
+```
+Returns JSON from the current premier league 2022-2023 table standings in order 1st - 20th
+
+### Request:
+```js
+var axios = require('axios');
+
+var config = {
+  method: 'get',
+  url: 'localhost:PORT/api/v1/fixture/tableStanding',
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+```
+### Response:
+```json
+{
+    "status": "Success",
+    "duration": "504ms",
+    "table": [
+        {
+            "Team": "Arsenal",
+            "Form": ["W","W","W","D","W","W","W","W","L","W","W","W","W","W"],
+            "Played": 14,
+            "GF": 33,
+            "GA": 11,
+            "GD": 22,
+            "Wins": 12,
+            "Losses": 1,
+            "Draws": 1,
+            "Points": 37
+        },
+        {
+            "Team": "Man City",
+            "Form": ["L","W","W","W","L","W","W","W","D","W","W","D","W","W"],
+            "Played": 14,
+            "GF": 40,
+            "GA": 14,
+            "GD": 26,
+            "Wins": 10,
+            "Losses": 2,
+            "Draws": 2,
+            "Points": 32
+        },
+        ...
+```
 
