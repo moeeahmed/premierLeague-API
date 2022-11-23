@@ -62,7 +62,7 @@ var data = {HomeTeam: 'Arsenal', AwayTeam: 'Nottingham Forest'};
 
 var config = {
   method: 'get',
-  url: '{{URL}}api/v1/fixture/getFixtures',
+  url: 'localhost:9000/api/v1/fixture/getFixtures',
   data : data
 };
 
@@ -138,5 +138,70 @@ axios(config)
 ```
 
 ## [<mark style="background-color: #00FF00">GET</mark>] Get Average Stats
+```sh
+localhost:PORT/api/v1/fixture/getAverageStats?team=Wolves
+```
+Gets the average stats of a specific team by defining the required `team` parameter
+
+### Parameters
+
+| Param         | Example                    | Description                        |
+| ------------- |:--------------------------:| ----------------------------------:|
+| team          | Wolves                  | team name in which to retrieve data for|
+
+### Request:
+```js
+var axios = require('axios');
+var team = Wolves;
+
+var config = {
+  method: 'get',
+  url: `localhost:PORT/api/v1/fixture/getAverageStats?team=${Wolves}`,
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+```
+### Response:
+```json
+{
+    "status": "Success",
+    "duration": "48ms",
+    "team": "Wolves",
+    "result": [
+        {
+            "Form": ["L","L","D","L","L","W","L","L","L","W","D","D","L","D","L"],
+            "Played": 15,
+            "GF": 8,
+            "GA": 24,
+            "GD": -16,
+            "Wins": 2,
+            "Losses": 9,
+            "Draws": 4,
+            "Points": 10,
+            "avgStats": {
+                "Shots on Goal": 2.8666666666666667,
+                "Shots off Goal": 4.2,
+                "Total Shots": 9.333333333333334,
+                "Blocked Shots": 2.2666666666666666,
+                "Shots insidebox": 5.666666666666667,
+                "Shots outsidebox": 3.6666666666666665,
+                "Fouls": 9.266666666666667,
+                "Corner Kicks": 4.133333333333334,
+                "Offsides": 1.4,
+                "Yellow Cards": 1.7333333333333334,
+                "Red Cards": 0.2,
+                "Goalkeeper Saves": 2.3333333333333335
+            }
+        }
+    ]
+}
+```
+
 ## [<mark style="background-color: #00FF00">GET</mark>] Get Table Standing
 
