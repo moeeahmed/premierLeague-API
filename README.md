@@ -45,7 +45,7 @@ Get fixtures for a specific team by defining the `team` parameter
 
 Get head to head between two teams by defining `HomeTeam` and `AwayTeam` parameters
 
-###Parameters
+### Parameters
 
 | Param         | Example                    | Description                        |
 | ------------- |:--------------------------:| ----------------------------------:|
