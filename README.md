@@ -39,6 +39,11 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
 ```sh
 localhost:PORT/api/v1/fixture/getFixtures
 ```
+Get all fixtures in the league in the 22-23 season
+
+Get fixtures for a specific team by defining the `team` parameter
+
+Get head to head between two teams by defining `HomeTeam` and `AwayTeam` parameters
 
 ```js
 var axios = require('axios');
