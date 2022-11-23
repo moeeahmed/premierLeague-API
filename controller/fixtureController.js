@@ -22,7 +22,7 @@ exports.getFixture = catchAsync(async (req, res) => {
 exports.getAverageStats = catchAsync(async (req, res) => {
   const start = new Date();
   //lets get all fixture related to the requested team that are finished
-  const team = capitalize(req.params.team);
+  const team = capitalize(req.query.team);
 
   const result = await Fixture.aggregate([
     { $match: { $or: [{ HomeTeam: team }, { AwayTeam: team }] } },
