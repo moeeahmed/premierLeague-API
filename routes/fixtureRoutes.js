@@ -16,7 +16,7 @@ router
 router.route('/getFixtures').get(fixtureController.getFixture);
 
 //Route to get a average stats for a team
-router.route('/getAverageStats/:team').get(fixtureController.getAverageStats);
+router.route('/getAverageStats').get(fixtureController.getAverageStats);
 
 //Get current table standing
 router.route('/tableStanding').get(fixtureController.tableStanding);
