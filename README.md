@@ -34,7 +34,31 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
     
     ![avgstats](https://user-images.githubusercontent.com/84675458/203622649-fb08abaf-6208-466c-84e9-527b220de827.PNG)
 
+# Endpoints
+## [GET] Get Fixture
+```sh
+localhost:PORT/api/v1/fixture/getFixtures
+```
 
+```js
+var axios = require('axios');
+var data = '';
 
+var config = {
+  method: 'get',
+  url: '{{URL}}api/v1/fixture/getFixtures',
+  headers: { },
+  data : data
+};
 
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+```
+## [GET] Get Average Stats
+## [GET] Get Table Standing
 
