@@ -209,23 +209,7 @@ axios(config)
   "team": "Wolves",
   "result": [
     {
-      "Form": [
-        "L",
-        "L",
-        "D",
-        "L",
-        "L",
-        "W",
-        "L",
-        "L",
-        "L",
-        "W",
-        "D",
-        "D",
-        "L",
-        "D",
-        "L"
-      ],
+      "Form": ["L","L","D","L","L","W","L","L","L","W","D","D","L","D","L"],
       "Played": 15,
       "GF": 8,
       "GA": 24,
