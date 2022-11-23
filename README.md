@@ -44,6 +44,16 @@ Get all fixtures in the league in the 22-23 season
 Get fixtures for a specific team by defining the `team` parameter
 
 Get head to head between two teams by defining `HomeTeam` and `AwayTeam` parameters
+
+###Parameters
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+
 ### Request:
 ```js
 var axios = require('axios');
