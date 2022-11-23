@@ -2,6 +2,26 @@
 
 A webapp that provides data about the current 2022-2023 Premier League Season
 
+# Contents
+- [Technical details](#technical-details)
+- [Additonal Info](#additonal-info)
+  * [Information provided](#information-provided)
+- [Endpoints](#endpoints)
+  * [GET] Get Fixture
+    + [Parameters](#parameters)
+    + [Request:](#request-)
+    + [Response:](#response-)
+  * [GET] Get Average Stats
+    + [Parameters](#parameters-1)
+    + [Request:](#request--1)
+    + [Response:](#response--1)
+  * [GET] Get Table Standing
+    + [Request:](#request--2)
+    + [Response:](#response--2)
+  * [PATCH] Update Fixtures
+    + [Request:](#request--3)
+    + [Response:](#response--3)
+
 # Technical details
 
 This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, ExpressJS and MongoDB to create a database and render data based on API calls
@@ -35,7 +55,7 @@ This project uses what i've learnt currently with HTML5, CSS3, JS, NodeJS, Expre
     ![avgstats](https://user-images.githubusercontent.com/84675458/203622649-fb08abaf-6208-466c-84e9-527b220de827.PNG)
 
 # Endpoints
-## [<mark style="background-color: #00FF00">GET</mark>] Get Fixture
+## [GET] Get Fixture
 ```sh
 localhost:PORT/api/v1/fixture/getFixtures
 ```
@@ -137,7 +157,7 @@ axios(config)
 }
 ```
 
-## [<mark style="background-color: #00FF00">GET</mark>] Get Average Stats
+## [GET] Get Average Stats
 ```sh
 localhost:PORT/api/v1/fixture/getAverageStats?team=Wolves
 ```
@@ -259,3 +279,45 @@ axios(config)
         ...
 ```
 
+## [PATCH] Update Fixtures
+```sh
+localhost:PORT/api/v1/fixture/tableStanding
+```
+Update fixture results from the GUI
+
+Input score for home and away team along with the status of the fixture
+
+***This requires user be signed in and have admin rigthts***
+
+### Request:
+```js
+var axios = require('axios');
+var data = '[{ 
+    "HomeTeam": "Wolves", 
+    "AwayTeam": "Arsenal", 
+    "HomeTeamScore": 0,
+    "AwayTeamScore": 2,
+    "Status": "Finished"   
+}]';
+
+var config = {
+  method: 'patch',
+  url: 'localhost:PORT/api/v1/fixture/updateFixture',
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+```
+### Response:
+```json
+{
+    "status": "Success",
+    "duration": "98ms"
+}
+```
