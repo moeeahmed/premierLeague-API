@@ -14,7 +14,7 @@ export const getAvgStats = async (id) => {
   try {
     const res = await axios({
       method: 'GET',
-      url: `/api/v1/fixture/getAverageStats/${id}`,
+      url: `/api/v1/fixture/getAverageStats?team=${id}`,
     });
 
     team.lastChild.textContent = res.data.team;
@@ -40,8 +40,6 @@ export const getAvgStats = async (id) => {
     const keys = Object.keys(data.avgStats).map((el) => el);
     const values = Object.values(data.avgStats).map((el) => el);
     const randomColor = randomRGBA();
-
-    console.log(...randomColor);
 
     const chartData = {
       labels: keys,
