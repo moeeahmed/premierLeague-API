@@ -1,13 +1,12 @@
 import axios from 'axios';
 import moment from 'moment/moment';
 import { showAlert } from './alert';
-import { Chart } from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 import { randomRGBA, transparentize } from '/chartUtils.js';
 
 export const getAvgStats = async (id) => {
   const overallStats = document.querySelectorAll('.avgTeam-stats dd');
   const teamImg = document.querySelector('.avgTeam-image img');
-  const statsList = document.querySelector('.stats--list');
   const team = document.querySelector('.avgTeam-info h2');
   const teamForm = document.querySelector('.avgTeam-info .team-form');
   const color = { L: 'red', D: 'grey', W: 'green' };
@@ -44,7 +43,7 @@ export const getAvgStats = async (id) => {
 
     console.log(...randomColor);
 
-    const dataa = {
+    const chartData = {
       labels: keys,
       datasets: [
         {
@@ -56,12 +55,12 @@ export const getAvgStats = async (id) => {
       ],
     };
 
-    const chartExist = Chart.getChart('acquisitions'); // <canvas> id
+    const chartExist = Chart.getChart('averageStats'); // <canvas> id
     if (chartExist) chartExist.destroy();
 
-    new Chart(document.getElementById('acquisitions'), {
+    new Chart(document.getElementById('averageStats'), {
       type: 'radar',
-      data: dataa,
+      data: chartData,
       options: {
         responsive: true,
         plugins: {
