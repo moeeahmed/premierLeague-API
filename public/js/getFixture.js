@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment/moment';
 import { showAlert } from './alert';
 import Chart from 'chart.js/auto';
-import { randomRGBA, transparentize } from '/chartUtils.js';
+import { randomRGBA, transparentize } from './chartUtils.js';
 
 export const getAvgStats = async (id) => {
   const overallStats = document.querySelectorAll('.avgTeam-stats dd');
