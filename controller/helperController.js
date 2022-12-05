@@ -1,5 +1,5 @@
 const Fixture = require('../models/fixtureModel');
-const APIFeatures = require('./../utils/apifeatures');
+const APIFeatures = require('./../utils/apiFeatures');
 
 //Compute stadings for fixtures
 exports.computeStanding = async function () {
