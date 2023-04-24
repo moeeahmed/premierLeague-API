@@ -33,15 +33,22 @@ exports.resizePhoto = catchAsync(async (req, _, next) => {
   next();
 });
 
+exports.getUser = catchAsync(async (req, res) => {
+  const user = req.user;
+
+  res.status(200).json({
+    status: 'success',
+    user,
+  });
+});
+
 exports.getAllUsers = catchAsync(async (_, res) => {
   const users = await User.find();
 
   res.status(200).json({
     status: 'success',
     results: users.length,
-    data: {
-      users,
-    },
+    users,
   });
 });
 
@@ -55,11 +62,21 @@ exports.updateDetails = catchAsync(async (req, res) => {
     runValidators: true,
   });
 
+  const message =
+    req.body.name && req.body.email
+      ? 'Your name and email have been updated'
+      : req.body.name
+      ? 'Your name has been updated'
+      : req.body.email
+      ? 'Your email has been updated'
+      : '';
+
   res.status(200).json({
     status: 'success',
     data: {
       user: updatedUser,
     },
+    message,
   });
 });
 

@@ -6,7 +6,7 @@ const filterObj = (obj, ...allowedFields) => {
   Object.keys(obj).forEach((key) => {
     //if key is present in required field, add to object
     if (allowedFields.includes(key)) {
-      newObj[key] = obj[key];
+      if (obj[key]) newObj[key] = obj[key];
     }
   });
 

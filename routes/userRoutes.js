@@ -41,13 +41,7 @@ router
   .route('/deleteAccount')
   .delete(authController.protect, authController.deleteAccount);
 
-// router
-//   .route('/deleteAccount')
-//   .delete(
-//     authController.protect,
-//     authController.restrictTo('admin'),
-//     userController.deleteUser
-//   );
+router.route('/getUser').get(authController.protect, userController.getUser);
 
 router
   .route('/getAllUsers')

@@ -133,7 +133,21 @@ exports.computeStanding = async function () {
   );
 
   //Sort array of objects by points accumulated
-  table.sort((a, b) => b.Points - a.Points);
+  //If points are the same, look at goal difference
+  //IF goal difference is that same, look at goals scored
+  table.sort((a, b) => {
+    if (b.Points - a.Points > 0) {
+      return 1;
+    } else if (b.Points - a.Points < 0) {
+      return -1;
+    } else {
+      if (b.GD - a.GD > 0) {
+        return 1;
+      } else if (b.GD - a.GD < 0) {
+        return -1;
+      }
+    }
+  });
 
   //return the table (will return a promise which we'll need to await)
   return table;

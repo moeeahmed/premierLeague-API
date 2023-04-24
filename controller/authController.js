@@ -31,6 +31,7 @@ const createSendToken = (user, statusCode, res) => {
     data: {
       user,
     },
+    message: res?.message,
   });
 };
 
@@ -85,6 +86,7 @@ exports.logout = catchAsync(async (_, res) => {
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password');
+
   //check if password matches existing password
   if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
     return next(new AppError('Old password does not match', 500));
@@ -94,6 +96,8 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   Object.assign(user, req.body);
 
   await user.save();
+
+  res.message = 'Your password has been updated';
 
   createSendToken(user, 200, res);
 });
@@ -112,7 +116,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   //send reset token to the users email
-  const resetURL = `${req.protocol}://${req.get('host')}/account/resetPassword`;
+  const resetURL = `${req.protocol}://localhost:3000/reset-password`;
 
   try {
     await new Email(user, resetURL, resetToken).sendPasswordReset();
@@ -131,7 +135,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: 'success',
-    message: 'Reset Token Sent',
+    message: 'Reset link sent to your email',
   });
 });
 
@@ -155,7 +159,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   //update changedPasswordAt property for user
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordConfirm = req.body.confirmPassword;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
@@ -166,8 +170,15 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.deleteAccount = catchAsync(async (req, res) => {
-  const user = await User.findByIdAndUpdate(req.user.id, { active: false });
+exports.deleteAccount = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(req.user.id, {
+    active: false,
+  }).select('+password');
+
+  //check if password matches existing password
+  if (!(await user.correctPassword(req.body.password, user.password))) {
+    return next(new AppError('Password is incorrect', 500));
+  }
 
   logout(res);
 
@@ -181,6 +192,7 @@ exports.deleteAccount = catchAsync(async (req, res) => {
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
   //get token & check if it exists
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
@@ -221,7 +233,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   }
 
   //grant access to the protected middleware
-  res.locals.user = user;
   req.user = user;
   next();
 });
@@ -230,6 +241,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     //roles {'admin','users'} currently
+
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError('You do not have permission to perfom this action', 403)

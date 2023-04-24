@@ -1,7 +1,6 @@
 const getData = require('./dataController');
 const Fixture = require('../models/fixtureModel');
 const catchAsync = require('./../utils/catchAsync');
-const AppError = require('./../utils/appError');
 const capitalize = require('./../utils/capitalize');
 const helperController = require('../controller/helperController');
 
@@ -14,11 +13,11 @@ exports.getFixture = catchAsync(async (req, res) => {
   res.status(200).json({
     status: 'Success',
     duration: `${new Date() - start}ms`,
-    results: `${fixture.length}`,
     fixture,
   });
 });
 
+//Get the average stats of each team for the season
 exports.getAverageStats = catchAsync(async (req, res) => {
   const start = new Date();
   //lets get all fixture related to the requested team that are finished
@@ -180,6 +179,7 @@ exports.getAverageStats = catchAsync(async (req, res) => {
   });
 });
 
+//Get the table standing
 exports.tableStanding = catchAsync(async (_, res) => {
   const start = new Date();
   const table = await helperController.computeStanding();
@@ -191,59 +191,220 @@ exports.tableStanding = catchAsync(async (_, res) => {
   });
 });
 
-//ADMIN ENDPOINTS TO UPDATE DB
+exports.getHome = catchAsync(async (_, res) => {
+  const startToday = new Date(new Date().setUTCHours(0, 0, 0, 0));
+  const endToday = new Date(new Date().setUTCHours(23, 59, 59));
+
+  const standings = await helperController.computeStanding();
+
+  //Get and render the results documents from the collection
+  const results = await Fixture.aggregate([
+    { $match: { Status: 'Finished', Date: { $lt: startToday } } },
+    { $sort: { Date: -1, MatchNumber: -1 } },
+    { $limit: 10 },
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$Date' } },
+        numOfGames: { $sum: 1 },
+        results: {
+          $addToSet: {
+            HomeTeam: '$HomeTeam',
+            AwayTeam: '$AwayTeam',
+            HomeTeamScore: '$HomeTeamScore',
+            AwayTeamScore: '$AwayTeamScore',
+            Status: '$Status',
+          },
+        },
+      },
+    },
+    { $sort: { _id: -1 } },
+  ]);
+
+  //Get and render the fixtures documents from the collection
+  const fixtures = await Fixture.aggregate([
+    {
+      $match: {
+        Date: {
+          $gte: startToday,
+          $lte: endToday,
+        },
+        Status: {
+          $ne: 'Postponed',
+        },
+      },
+    },
+    { $sort: { Date: 1, MatchNumber: 1 } },
+  ]);
+
+  //Send data to client
+  res.status(200).json({
+    standings,
+    results,
+    fixtures,
+  });
+});
+
+//Get all matches whos scores are missing or are null and update them when admin requests
+exports.getScoresToUpdate = catchAsync(async (_, res) => {
+  //Get the latest fixture document from the collection
+  const fixtures = await Fixture.aggregate([
+    { $match: { Status: { $nin: ['Postponed', 'Finished'] } } },
+    { $match: { Date: { $lt: new Date() } } },
+  ]);
+
+  res.status(200).json({ fixtures });
+});
 exports.updateFixture = catchAsync(async (req, res, next) => {
   const start = new Date();
 
   req.body.forEach(async (fixture) => {
-    await Fixture.findOneAndUpdate(
-      { HomeTeam: fixture.HomeTeam, AwayTeam: fixture.AwayTeam },
-      {
-        HomeTeamScore: fixture.HomeTeamScore,
-        AwayTeamScore: fixture.AwayTeamScore,
-        Status: fixture.Status,
-      },
-      {
-        runValidators: true,
-      }
-    );
+    if (!(fixture.Status === 'Status')) {
+      await Fixture.findOneAndUpdate(
+        { HomeTeam: fixture.HomeTeam, AwayTeam: fixture.AwayTeam },
+        {
+          HomeTeamScore: fixture.HomeTeamScore,
+          AwayTeamScore: fixture.AwayTeamScore,
+          Status: fixture.Status,
+        },
+        {
+          runValidators: true,
+        }
+      );
+    }
   });
+
+  const plural = req.body.length !== 1 ? 's' : '';
+  const verb = req.body.length === 1 ? 'has' : 'have';
+  const message = `${req.body.length} game${plural} ${verb} been updated`;
 
   res.status(200).json({
     status: 'Success',
     duration: `${new Date() - start}ms`,
+    message,
   });
 });
 
+//Get all matches whos stats are missing or are null and update them when admin requests
+exports.getStatsToUpdate = catchAsync(async (_, res) => {
+  const fixtures = await Fixture.aggregate([
+    {
+      $match: {
+        $and: [
+          { Status: { $ne: 'Postponed' } },
+          { Status: { $eq: 'Finished' } },
+        ],
+      },
+    },
+    { $match: { 'Statistics.Ball Possession': '0%' } },
+    { $sort: { Date: -1 } },
+  ]);
+
+  res.status(200).json(fixtures);
+});
 exports.updateFixtureStats = catchAsync(async (req, res) => {
   const start = new Date();
 
-  const data = req.body;
+  const fixtures = await Fixture.aggregate([
+    {
+      $match: {
+        $and: [
+          { Status: { $ne: 'Postponed' } },
+          { Status: { $eq: 'Finished' } },
+        ],
+      },
+    },
+    { $match: { 'Statistics.Ball Possession': '0%' } },
+    { $sort: { Date: -1 } },
+  ]);
 
-  data.forEach(async (ID) => {
-    const stats = await getData.getFixturesStats(ID);
-    const resp = await getData.getFixtures(ID);
-    const referee = resp[0].fixture.referee;
+  const fixtureIds = fixtures.map((fixture) => fixture.FixtureId);
 
-    const arr = [];
-    stats.forEach((el) => {
-      const x = {};
-      el.statistics.forEach((els) => {
-        x[els.type] = els.value;
-      });
+  let rateLimit = 0;
 
-      arr.push(x);
+  function promiseWithForLoop() {
+    return new Promise((resolve, reject) => {
+      let ID = 0;
+
+      const interval = setInterval(async () => {
+        const stats = await getData.getFixturesStats(fixtureIds[ID]);
+        const resp = await getData.getFixtures(fixtureIds[ID]);
+        const referee = resp[0].fixture.referee;
+        rateLimit = stats.headers['x-ratelimit-requests-remaining'];
+
+        const arr = stats.data.response.map((el) =>
+          el.statistics.reduce((obj, els) => {
+            obj[els.type] = els.value;
+            return obj;
+          }, {})
+        );
+
+        await Fixture.findOneAndUpdate(
+          { FixtureId: fixtureIds[ID] },
+          { Referee: referee, Statistics: arr },
+          { new: true }
+        );
+
+        ID++;
+        if (ID >= fixtureIds.length || rateLimit <= 0) {
+          clearInterval(interval);
+          const message =
+            ID >= fixtureIds.length
+              ? 'All fixtures updated'
+              : 'Reached API call limit';
+          resolve(message);
+        }
+      }, 4000);
     });
+  }
 
-    await Fixture.findOneAndUpdate(
-      { FixtureId: ID },
-      { Referee: referee, Statistics: arr },
-      { new: true }
-    );
+  promiseWithForLoop().then((result) => {
+    res.status(201).json({
+      status: 'Success',
+      result,
+      duration: `${new Date() - start}ms`,
+    });
+  });
+});
+
+//Fixture page render
+exports.getAllFixtures = catchAsync(async (_, res) => {
+  const endToday = new Date(new Date().setUTCHours(23, 59, 59));
+
+  //Get and render the fixtures documents from the collection
+  const allFixtures = await Fixture.aggregate([
+    { $match: { Date: { $lt: endToday } } },
+    { $sort: { Date: -1, MatchNumber: -1 } },
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$Date' } },
+        numOfGames: { $sum: 1 },
+        results: {
+          $addToSet: {
+            HomeTeam: '$HomeTeam',
+            AwayTeam: '$AwayTeam',
+            Date: '$Date',
+            HomeTeamScore: '$HomeTeamScore',
+            AwayTeamScore: '$AwayTeamScore',
+            Status: '$Status',
+            Postponed: '$Postponed',
+            Statistics: '$Statistics',
+            Referee: '$Referee',
+          },
+        },
+      },
+    },
+    { $sort: { _id: -1 } },
+  ]);
+
+  //Get the latest fixture document from the collection
+  const [latestFixture] = await helperController.getFixture({
+    Status: 'Finished',
+    sort: 'DateDsc',
+    limit: 1,
   });
 
-  res.status(201).json({
-    status: 'Success',
-    duration: `${new Date() - start}ms`,
-  });
+  //get teamsa
+  const teams = await Fixture.distinct('HomeTeam');
+
+  res.status(200).json({ teams, allFixtures, latestFixture });
 });

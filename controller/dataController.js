@@ -34,6 +34,6 @@ exports.getFixturesStats = (id) => {
 
   return axios
     .request(options)
-    .then((response) => response.data.response)
+    .then((response) => response)
     .catch((err) => console.error(err));
 };
