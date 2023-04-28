@@ -7,6 +7,7 @@ A webapp that provides data about the current 2022-2023 Premier League Season
 - [premier-league-data](#premier-league-data)
 - [Contents](#contents)
 - [Technical details](#technical-details)
+  - [Setting up AWS EC2 instance](#setting-up-aws-ec2-instance)
 - [Endpoints](#endpoints)
   - [`[GET]` Get Fixture](#get-get-fixture)
     - [Parameters](#parameters)
@@ -27,6 +28,25 @@ A webapp that provides data about the current 2022-2023 Premier League Season
 
 This project uses what i've learnt currently with NodeJS, ExpressJS and MongoDB to create a football REST API
 
+## Setting up AWS EC2 instance
+
+1. Launch EC2 instance on the AWS Console
+2. Choose the AMI (Amazon Machine Image) you want to use.
+3. Select the instance type and configure your instance settings.
+4. Create or select an existing key pair and download the private key file to your local machine.
+
+To connect via SSH to local machine
+
+1. Open a terminal or command prompt on your local machine.
+2. Navigate to the directory where you saved your private key file.
+3. Change the permissions of the private key file using the command: _chmod 400 keyname.pem_
+4. Connect to the instance using the command: _ssh -i keyname.pem ec2-user@public-dns-name_
+
+To install packages andcarry out updates
+
+1. To update packages install on the instance, use the command: _sudo yum update -y_
+2. To install packages use the command: _sudo yum install -y <package>_
+
 # Endpoints
 
 ## `[GET]` Get Fixture
@@ -43,13 +63,13 @@ Get head to head between two teams by defining `HomeTeam` and `AwayTeam` paramet
 
 ### Parameters
 
-| Param    | Example                     | Description                                                                        |
-| -------- | --------------------------- | ---------------------------------------------------------------------------------- |
-| HomeTeam | Arsenal                     | Define HomeTeam                                                                    |
-| AwayTeam | Nottingham Forest           | Define AwayTeam                                                                    |
-| Team     | Man Utd                     | Define team                                                                        |
-| Date     | '2022-11-13' ('YYYY-MM-DD') | Define fixtures at certain dates `i.e Date='2022-11-13'`.<br>Use the comparison operators `Date[gte] , Date[lte]` to find games between ranges<br>`i.e Date[gte]=2022-11-05&Date[lte]=2022-11-06`  |
-| Status   | 'Finished')                 | Defines status of a game: `Finished, Live, Not Started, Postponed`                 |
+| Param    | Example                     | Description                                                                                                                                                                                       |
+| -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HomeTeam | Arsenal                     | Define HomeTeam                                                                                                                                                                                   |
+| AwayTeam | Nottingham Forest           | Define AwayTeam                                                                                                                                                                                   |
+| Team     | Man Utd                     | Define team                                                                                                                                                                                       |
+| Date     | '2022-11-13' ('YYYY-MM-DD') | Define fixtures at certain dates `i.e Date='2022-11-13'`.<br>Use the comparison operators `Date[gte] , Date[lte]` to find games between ranges<br>`i.e Date[gte]=2022-11-05&Date[lte]=2022-11-06` |
+| Status   | 'Finished')                 | Defines status of a game: `Finished, Live, Not Started, Postponed`                                                                                                                                |
 
 ### Request:
 
@@ -179,7 +199,23 @@ axios(config)
   "team": "Wolves",
   "result": [
     {
-      "Form": ["L","L","D","L","L","W","L","L","L","W","D","D","L","D","L"],
+      "Form": [
+        "L",
+        "L",
+        "D",
+        "L",
+        "L",
+        "W",
+        "L",
+        "L",
+        "L",
+        "W",
+        "D",
+        "D",
+        "L",
+        "D",
+        "L"
+      ],
       "Played": 15,
       "GF": 8,
       "GA": 24,

@@ -331,6 +331,8 @@ exports.updateFixtureStats = catchAsync(async (req, res) => {
         const referee = resp[0].fixture.referee;
         rateLimit = stats.headers['x-ratelimit-requests-remaining'];
 
+        console.log(rateLimit);
+
         const arr = stats.data.response.map((el) =>
           el.statistics.reduce((obj, els) => {
             obj[els.type] = els.value;
@@ -345,7 +347,7 @@ exports.updateFixtureStats = catchAsync(async (req, res) => {
         );
 
         ID++;
-        if (ID >= fixtureIds.length || rateLimit <= 0) {
+        if (ID >= fixtureIds.length || rateLimit <= 1) {
           clearInterval(interval);
           const message =
             ID >= fixtureIds.length
