@@ -5,6 +5,6 @@ const AppError = require('../utils/appError');
 //middleware
 const router = express.Router();
 
-router.route('/getAllUsers').get(playersController.getAllPlayers);
+router.route('/getAllPlayers').get(playersController.getAllPlayers);
 
 module.exports = router;
