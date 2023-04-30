@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const validator = require('validator');
 
 //User schema
@@ -58,8 +59,16 @@ const playersSchema = mongoose.Schema({
 
 playersSchema.pre('find', function (next) {
   this.find({ active: { $ne: false } });
+  this.calculateAge();
   next();
 });
+
+playersSchema.methods.calculateAge = function () {
+  const birthdate = moment(this.birthdate);
+  const today = moment();
+  const ageInYears = today.diff(birthdate, 'years');
+  this.age = ageInYears;
+};
 
 const Players = mongoose.model('Players', playersSchema);
 module.exports = Players;
