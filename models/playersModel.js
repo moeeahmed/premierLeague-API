@@ -57,16 +57,12 @@ const playersSchema = mongoose.Schema({
   },
 });
 
-playersSchema.methods.calculateAge = function () {
+playersSchema.pre('find', function (next) {
+  this.find({ active: { $ne: false } });
   const birthdate = moment(this.birthdate);
   const today = moment();
   const ageInYears = today.diff(birthdate, 'years');
   this.age = ageInYears;
-};
-
-playersSchema.pre('find', function (next) {
-  this.find({ active: { $ne: false } });
-  this.calculateAge();
   next();
 });
 
