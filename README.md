@@ -28,25 +28,6 @@ A webapp that provides data about the current 2022-2023 Premier League Season
 
 This project uses what i've learnt currently with NodeJS, ExpressJS and MongoDB to create a football REST API
 
-## Setting up AWS EC2 instance
-
-1. Launch EC2 instance on the AWS Console
-2. Choose the AMI (Amazon Machine Image) you want to use.
-3. Select the instance type and configure your instance settings.
-4. Create or select an existing key pair and download the private key file to your local machine.
-
-To connect via SSH to local machine
-
-1. Open a terminal or command prompt on your local machine.
-2. Navigate to the directory where you saved your private key file.
-3. Change the permissions of the private key file using the command: _chmod 400 keyname.pem_
-4. Connect to the instance using the command: _ssh -i keyname.pem ec2-user@public-dns-name_
-
-To install packages andcarry out updates
-
-1. To update packages install on the instance, use the command: _sudo yum update -y_
-2. To install packages use the command: _sudo yum install -y <package>_
-
 # Endpoints
 
 ## `[GET]` Get Fixture
