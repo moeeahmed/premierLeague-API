@@ -13,6 +13,7 @@ const hpp = require('hpp');
 
 const fixtureRoutes = require('./routes/fixtureRoutes');
 const userRouter = require('./routes/userRoutes');
+const playersRouter = require('./routes/playersRoutes');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controller/errorController');
 
@@ -78,6 +79,7 @@ app.locals.moment = require('moment');
 // -- ROUTES --
 app.use('/api/v1/fixture', limiter, fixtureRoutes);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/players', playersRouter);
 
 //Handle any
 app.all('*', (req, res, next) => {
